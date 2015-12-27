@@ -1,0 +1,28 @@
+{
+    "name": "alexpts/php-simple-router",
+    "description": "Simple router compatible with the PSR-7",
+    "homepage": "https://github.com/alexpts/php-simple-router",
+    "license": "MIT",
+    "type": "library",
+    "keywords": [
+        "router",
+        "psr-7"
+    ],
+    "authors": [{
+        "name": "Alexpts",
+        "email": "alexpts3@gmail.com"
+    }],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">5.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "5.1.3",
+        "codeclimate/php-test-reporter": "dev-master"
+    },
+    "autoload": {
+        "psr-0": {
+            "PTS\\Events": "src"
+        }
+    }
+}
