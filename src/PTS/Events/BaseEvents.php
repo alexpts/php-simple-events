@@ -57,32 +57,57 @@ abstract class BaseEvents
             return $this->offAll($eventName);
         }
 
-        $handlerId = $this->createHandlerId($handler);
-
-        if (is_int($priority)) {
-            if (isset($this->listeners[$eventName][$priority][$handlerId])) {
-                unset($this->listeners[$eventName][$priority][$handlerId]);
-
-                if (empty($this->listeners[$eventName][$priority])) {
-                    unset($this->listeners[$eventName][$priority]);
-                }
-            }
-        } else {
-            foreach ($this->listeners[$eventName] as $currentPriority => $nandlers) {
-                foreach ($nandlers as $currentHandlerId => $paramsHandler) {
-                    if ($handlerId === $currentHandlerId){
-                        unset($this->listeners[$eventName][$currentPriority][$handlerId]);
-
-                        if (empty($this->listeners[$eventName][$currentPriority])) {
-                            unset($this->listeners[$eventName][$currentPriority]);
-                        }
-                    }
-                }
-            }
-        }
+        $priority === null
+            ? $this->offHandlerWithoutPriority($eventName, $handler)
+            : $this->offHandlerWithPriority($eventName, $handler, $priority);
 
         if (empty($this->listeners[$eventName])) {
             unset($this->listeners[$eventName]);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param string $eventName
+     * @param callable $handler
+     * @param int $priority
+     * @return $this
+     */
+    protected function offHandlerWithPriority($eventName, callable $handler, $priority = 50)
+    {
+        $handlerId = $this->createHandlerId($handler);
+
+        if (isset($this->listeners[$eventName][$priority][$handlerId])) {
+            unset($this->listeners[$eventName][$priority][$handlerId]);
+
+            if (empty($this->listeners[$eventName][$priority])) {
+                unset($this->listeners[$eventName][$priority]);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param string $eventName
+     * @param callable $handler
+     * @return $this
+     */
+    protected function offHandlerWithoutPriority($eventName, callable $handler)
+    {
+        $handlerId = $this->createHandlerId($handler);
+
+        foreach ($this->listeners[$eventName] as $currentPriority => $nandlers) {
+            foreach ($nandlers as $currentHandlerId => $paramsHandler) {
+                if ($handlerId === $currentHandlerId){
+                    unset($this->listeners[$eventName][$currentPriority][$handlerId]);
+
+                    if (empty($this->listeners[$eventName][$currentPriority])) {
+                        unset($this->listeners[$eventName][$currentPriority]);
+                    }
+                }
+            }
         }
 
         return $this;
