@@ -1,7 +1,7 @@
 <?php
 namespace PTS\Events;
 
-class Filters extends Base
+class Filters extends BaseEvents
 {
     /**
      * @param string $name
@@ -10,25 +10,23 @@ class Filters extends Base
      *
      * @return mixed
      */
-    public function emit($name, $value, array $arguments = [])
+    public function filter($name, $value, array $arguments = [])
     {
-        if (!isset($this->list[$name])) {
+        if (!isset($this->listeners[$name])) {
             return $value;
         }
 
-        krsort($this->list[$name], SORT_NUMERIC);
-        foreach ($this->list[$name] as $priority => $handlers) {
-            foreach ($handlers as $nameHandler => $paramsHandler) {
+        krsort($this->listeners[$name], SORT_NUMERIC);
+        foreach ($this->listeners[$name] as $handlers) {
+            foreach ($handlers as $paramsHandler) {
+                $callArguments = $arguments;
                 $extraArguments = $paramsHandler['extraArguments'];
-                $handler = $paramsHandler['handler'];
-
                 if ($extraArguments) {
-                    $arguments = array_merge($arguments, $extraArguments);
+                    $callArguments = array_merge($callArguments, $extraArguments);
                 }
 
-                array_unshift($arguments, $value);
-
-                $value = call_user_func_array($handler, $arguments);
+                array_unshift($callArguments, $value);
+                $value = call_user_func_array($paramsHandler['handler'], $callArguments);
             }
         }
 

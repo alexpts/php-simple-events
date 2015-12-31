@@ -1,36 +1,32 @@
 <?php
 namespace PTS\Events;
 
-class Events extends Base
+class Events extends BaseEvents
 {
     /**
      * @param string $name
      * @param array $arguments
      *
-     * @return mixed
+     * @return $this
      */
     public function emit($name, array $arguments = [])
     {
-        $result = null;
-
-        if (!isset($this->list[$name])){
-            return $result;
+        if (!isset($this->listeners[$name])){
+            return $this;
         }
 
-        krsort($this->list[$name], SORT_NUMERIC);
-        foreach ($this->list[$name] as $priority => $handlers) {
-            foreach ($handlers as $nameHandler => $paramsHandler) {
+        krsort($this->listeners[$name], SORT_NUMERIC);
+        foreach ($this->listeners[$name] as $handlers) {
+            foreach ($handlers as $paramsHandler) {
                 $extraArguments = $paramsHandler['extraArguments'];
-                $handler = $paramsHandler['handler'];
-
                 if ($extraArguments) {
                     $arguments = array_merge($arguments, $extraArguments);
                 }
 
-                $result = call_user_func_array($handler, $arguments);
+                call_user_func_array($paramsHandler['handler'], $arguments);
             }
         }
 
-        return $result;
+        return $this;
     }
 }

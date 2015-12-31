@@ -1,12 +1,12 @@
 {
-    "name": "alexpts/php-simple-router",
-    "description": "Simple router compatible with the PSR-7",
-    "homepage": "https://github.com/alexpts/php-simple-router",
+    "name": "alexpts/php-simple-events",
+    "description": "Simple events and filters",
+    "homepage": "https://github.com/alexpts/php-simple-events",
     "license": "MIT",
     "type": "library",
     "keywords": [
-        "router",
-        "psr-7"
+        "events",
+        "filters"
     ],
     "authors": [{
         "name": "Alexpts",
