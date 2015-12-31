@@ -11,7 +11,7 @@ class Events extends BaseEvents
      */
     public function emit($name, array $arguments = [])
     {
-        if (!isset($this->listeners[$name])){
+        if (!isset($this->listeners[$name])) {
             return $this;
         }
 

@@ -100,7 +100,7 @@ abstract class BaseEvents
 
         foreach ($this->listeners[$eventName] as $currentPriority => $nandlers) {
             foreach ($nandlers as $currentHandlerId => $paramsHandler) {
-                if ($handlerId === $currentHandlerId){
+                if ($handlerId === $currentHandlerId) {
                     unset($this->listeners[$eventName][$currentPriority][$handlerId]);
 
                     if (empty($this->listeners[$eventName][$currentPriority])) {
