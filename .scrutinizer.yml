@@ -1,0 +1,18 @@
+filter:
+    excluded_paths:
+        - 'test/*'
+checks:
+    php:
+        uppercase_constants: true
+        simplify_boolean_return: true
+        return_doc_comments: true
+        properties_in_camelcaps: true
+        phpunit_assertions: true
+        parameters_in_camelcaps: true
+        parameter_doc_comments: true
+
+coding_style:
+    php: {  }
+
+tools:
+    external_code_coverage: true
