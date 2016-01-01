@@ -13,7 +13,7 @@ class Filters extends BaseEvents implements FiltersInterface
     public function filter($name, $value, array $arguments = [])
     {
         if (isset($this->listeners[$name])) {
-            krsort($this->listeners[$name], SORT_NUMERIC);
+            $this->sortListeners($name);
             foreach ($this->listeners[$name] as $handlers) {
                 foreach ($handlers as $paramsHandler) {
                     $callArguments = $this->getCallArgs($arguments, $paramsHandler['extraArguments'], $value);

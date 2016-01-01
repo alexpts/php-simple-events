@@ -16,6 +16,16 @@ abstract class BaseEvents
 
     /**
      * @param string $name
+     */
+    protected function sortListeners($name)
+    {
+        if (isset($this->listeners[$name])) {
+            krsort($this->listeners[$name], SORT_NUMERIC);
+        }
+    }
+
+    /**
+     * @param string $name
      * @param callable $handler
      * @param int $priority
      * @param array $extraArguments

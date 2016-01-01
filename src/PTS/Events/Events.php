@@ -11,15 +11,13 @@ class Events extends BaseEvents implements EventsInterface
      */
     public function emit($name, array $arguments = [])
     {
-        if (!isset($this->listeners[$name])) {
-            return $this;
-        }
-
-        krsort($this->listeners[$name], SORT_NUMERIC);
-        foreach ($this->listeners[$name] as $handlers) {
-            foreach ($handlers as $paramsHandler) {
-                $arguments = array_merge($arguments, $paramsHandler['extraArguments']);
-                call_user_func_array($paramsHandler['handler'], $arguments);
+        if (isset($this->listeners[$name])) {
+            $this->sortListeners($name);
+            foreach ($this->listeners[$name] as $handlers) {
+                foreach ($handlers as $paramsHandler) {
+                    $arguments = array_merge($arguments, $paramsHandler['extraArguments']);
+                    call_user_func_array($paramsHandler['handler'], $arguments);
+                }
             }
         }
 
