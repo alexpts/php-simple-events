@@ -19,7 +19,7 @@ abstract class BaseEvents
      * @param callable $handler
      * @param int $priority
      * @param array $extraArguments
-     * @return FiltersInterface
+     * @return $this
      */
     public function on($name, callable $handler, $priority = 50, array $extraArguments = [])
     {
