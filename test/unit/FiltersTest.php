@@ -115,7 +115,7 @@ class FiltersTest extends \PHPUnit_Framework_TestCase
 
     public function testChain()
     {
-        $expected = __NAMESPACE__ . '\Filters';
+        $expected = __NAMESPACE__ . '\FiltersInterface';
         $this->assertInstanceOf($expected, $this->filters->on('some', 'trim'));
         $this->assertInstanceOf($expected, $this->filters->off('some', 'trim'));
     }

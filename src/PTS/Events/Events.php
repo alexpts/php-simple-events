@@ -1,7 +1,7 @@
 <?php
 namespace PTS\Events;
 
-class Events extends BaseEvents
+class Events extends BaseEvents implements EventsInterface
 {
     /**
      * @param string $name

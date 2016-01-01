@@ -57,7 +57,7 @@ class EventsTest extends \PHPUnit_Framework_TestCase
 
     public function testChain()
     {
-        $expected = __NAMESPACE__ . '\Events';
+        $expected = __NAMESPACE__ . '\EventsInterface';
         $this->assertInstanceOf($expected, $this->events->on('some', [$this, 'customEventHandler']));
         $this->assertInstanceOf($expected, $this->events->emit('some'));
         $this->assertInstanceOf($expected, $this->events->off('some', [$this, 'customEventHandler']));

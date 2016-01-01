@@ -1,7 +1,7 @@
 <?php
 namespace PTS\Events;
 
-class Filters extends BaseEvents
+class Filters extends BaseEvents implements FiltersInterface
 {
     /**
      * @param string $name
