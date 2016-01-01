@@ -9,7 +9,7 @@
 ## События
 Класс `Events` предостовляет диспетчер событий. Обработчики подписываются на событие и будут выполнены в момент срабатывания события.
 
-### API
+### API Events
 Класс предоставляет интерфейс `EventsInterface`, который содержит 3 метода
 
 ```php
@@ -56,4 +56,26 @@ $events->off('post:title', 'trim');
 // remove all handlers
 $events->on('post:title', 'trim', 10);
 $events->off('post:title');
+```
+
+## Фильтры
+Фильтры очень похожи на события. В момент срабатывания события фильтрации нужно обязательно передать значение, которое будет пропущено через фильтры. 
+
+### API Filters
+Интерфейс фильтров полностью повторяет интерфейс событий в части подключения и отключения обработчиков.
+А вот вызов фильтра происходит с помощью метода `filter` вместо `emit`.
+
+```php
+filter($name, $value, array $arguments = []);
+on($name, callable $handler, $priority = 50, array $extraArguments = []);
+off($eventName, callable $handler = null, $priority = null);
+```
+
+#### Пример
+```php
+use PTS\Events\Filters;
+$filters = new Filters;
+
+$filters->on('post:title', 'trim');
+$title = $filter->filter('post:title', ' Raw title!!!');
 ```
