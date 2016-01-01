@@ -3,9 +3,7 @@ namespace PTS\Events;
 
 class FiltersTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var Filters
-     */
+    /** @var Filters */
     protected $filters;
 
     protected function setUp()
@@ -113,5 +111,12 @@ class FiltersTest extends \PHPUnit_Framework_TestCase
         $this->filters->on('before_output_title', [$this, 'customFilterHandler'], 40);
         $title = $this->filters->filter('before_output_title', $rawTitle);
         $this->assertEquals('He', $title);
+    }
+
+    public function testChain()
+    {
+        $expected = __NAMESPACE__ . '\Filters';
+        $this->assertInstanceOf($expected, $this->filters->on('some', 'trim'));
+        $this->assertInstanceOf($expected, $this->filters->off('some', 'trim'));
     }
 }

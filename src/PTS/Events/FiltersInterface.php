@@ -16,7 +16,7 @@ interface FiltersInterface
      * @param callable $handler
      * @param int $priority
      * @param array $extraArguments
-     * @return EventsInterface
+     * @return FiltersInterface
      */
     public function on($name, callable $handler, $priority = 50, array $extraArguments = []);
 
@@ -24,7 +24,7 @@ interface FiltersInterface
      * @param string $eventName
      * @param callable|null $handler
      * @param null|int $priority
-     * @return EventsInterface
+     * @return FiltersInterface
      */
     public function off($eventName, callable $handler = null, $priority = null);
 

@@ -18,11 +18,7 @@ class Events extends BaseEvents
         krsort($this->listeners[$name], SORT_NUMERIC);
         foreach ($this->listeners[$name] as $handlers) {
             foreach ($handlers as $paramsHandler) {
-                $extraArguments = $paramsHandler['extraArguments'];
-                if ($extraArguments) {
-                    $arguments = array_merge($arguments, $extraArguments);
-                }
-
+                $arguments = array_merge($arguments, $paramsHandler['extraArguments']);
                 call_user_func_array($paramsHandler['handler'], $arguments);
             }
         }
