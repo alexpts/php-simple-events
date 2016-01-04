@@ -12,12 +12,12 @@ class Filters extends BaseEvents implements FiltersInterface
      */
     public function filter($name, $value, array $arguments = [])
     {
-        if (isset($this->listeners[$name])) {
+        if (array_key_exists($name, $this->listeners)) {
             $this->sortListeners($name);
             foreach ($this->listeners[$name] as $handlers) {
                 foreach ($handlers as $paramsHandler) {
-                    $callArguments = $this->getCallArgs($arguments, $paramsHandler['extraArguments'], $value);
-                    $value = call_user_func_array($paramsHandler['handler'], $callArguments);
+                    $callArgs = $this->getCallArgs($arguments, $paramsHandler['extraArguments'], $value);
+                    $value = call_user_func_array($paramsHandler['handler'], $callArgs);
                 }
             }
         }

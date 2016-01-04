@@ -19,7 +19,7 @@ abstract class BaseEvents
      */
     protected function sortListeners($name)
     {
-        if (isset($this->listeners[$name])) {
+        if (array_key_exists($name, $this->listeners)) {
             krsort($this->listeners[$name], SORT_NUMERIC);
         }
     }
@@ -48,7 +48,7 @@ abstract class BaseEvents
      */
     protected function offAll($eventName)
     {
-        if (isset($this->listeners[$eventName])) {
+        if (array_key_exists($eventName, $this->listeners)) {
             unset($this->listeners[$eventName]);
         }
 

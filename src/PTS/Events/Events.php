@@ -11,7 +11,7 @@ class Events extends BaseEvents implements EventsInterface
      */
     public function emit($name, array $arguments = [])
     {
-        if (isset($this->listeners[$name])) {
+        if (array_key_exists($name, $this->listeners)) {
             $this->sortListeners($name);
             foreach ($this->listeners[$name] as $handlers) {
                 foreach ($handlers as $paramsHandler) {

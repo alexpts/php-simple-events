@@ -5,6 +5,9 @@
 [![Code Climate](https://codeclimate.com/github/alexpts/php-simple-events/badges/gpa.svg)](https://codeclimate.com/github/alexpts/php-simple-events)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/alexpts/php-simple-events/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/alexpts/php-simple-events/?branch=master)
 
+## Installation
+
+```$ composer require alexpts/php-simple-events```
 
 ## События
 Класс `Events` предостовляет диспетчер событий. Обработчики подписываются на событие и будут выполнены в момент срабатывания события.
