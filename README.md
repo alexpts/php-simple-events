@@ -80,5 +80,5 @@ use PTS\Events\Filters;
 $filters = new Filters;
 
 $filters->on('post:title', 'trim');
-$title = $filter->filter('post:title', ' Raw title!!!');
+$title = $filters->filter('post:title', ' Raw title!!!');
 ```
