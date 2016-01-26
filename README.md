@@ -20,7 +20,7 @@ emit($name, array $arguments = []);
 
 on($name, callable $handler, $priority = 50, array $extraArguments = []);
 
-off($eventName, callable $handler = null, $priority = null);
+off($name, callable $handler = null, $priority = null);
  ```
 
 #### Добавление обработчиков
@@ -71,7 +71,7 @@ $events->off('post:title');
 ```php
 filter($name, $value, array $arguments = []);
 on($name, callable $handler, $priority = 50, array $extraArguments = []);
-off($eventName, callable $handler = null, $priority = null);
+off($name, callable $handler = null, $priority = null);
 ```
 
 #### Пример
@@ -80,5 +80,5 @@ use PTS\Events\Filters;
 $filters = new Filters;
 
 $filters->on('post:title', 'trim');
-$title = $filter->filter('post:title', ' Raw title!!!');
+$title = $filters->filter('post:title', ' Raw title!!!');
 ```
