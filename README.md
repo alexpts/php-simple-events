@@ -1,5 +1,7 @@
 # php-simple-events
 
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/590c6fdc-95ed-4ed6-b76d-169d99c5de58/big.png)](https://insight.sensiolabs.com/projects/590c6fdc-95ed-4ed6-b76d-169d99c5de58)
+
 [![Build Status](https://travis-ci.org/alexpts/php-simple-events.svg?branch=master)](https://travis-ci.org/alexpts/php-simple-events)
 [![Test Coverage](https://codeclimate.com/github/alexpts/php-simple-events/badges/coverage.svg)](https://codeclimate.com/github/alexpts/php-simple-events/coverage)
 [![Code Climate](https://codeclimate.com/github/alexpts/php-simple-events/badges/gpa.svg)](https://codeclimate.com/github/alexpts/php-simple-events)
