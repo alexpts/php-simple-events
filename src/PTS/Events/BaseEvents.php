@@ -140,4 +140,39 @@ abstract class BaseEvents
 
         return is_string($handler) ? $handler : spl_object_hash($handler);
     }
+
+    /**
+     * @param string $name
+     * @param array $arguments
+     * @param mixed $value
+     * @return mixed
+     */
+    protected function trigger($name, array $arguments = [], $value = null)
+    {
+        if (array_key_exists($name, $this->listeners)) {
+            $this->sortListeners($name);
+            foreach ($this->listeners[$name] as $handlers) {
+                foreach ($handlers as $paramsHandler) {
+                    $callArgs = $this->getCallArgs($arguments, $paramsHandler['extraArguments'], $value);
+                    $value = call_user_func_array($paramsHandler['handler'], $callArgs);
+                }
+            }
+        }
+
+        return $value;
+    }
+
+
+    /**
+     * @param array $arguments
+     * @param array $extraArguments
+     * @param null $value
+     * @return array
+     */
+    protected function getCallArgs(array $arguments, array $extraArguments, $value = null)
+    {
+        $arguments = array_merge($arguments, $extraArguments);
+        array_unshift($arguments, $value);
+        return $arguments;
+    }
 }

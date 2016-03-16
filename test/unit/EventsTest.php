@@ -25,22 +25,23 @@ class EventsTest extends \PHPUnit_Framework_TestCase
         $this->events->on('some:event', 'trim');
         $listeners2 = $this->events->getListeners();
 
-        $this->assertCount(0, $listeners1);
-        $this->assertCount(1, $listeners2);
+        self::assertCount(0, $listeners1);
+        self::assertCount(1, $listeners2);
     }
 
     public function testSimpleEvent()
     {
         $this->events->on('some:event', [$this, 'customEventHandler']);
-        $this->assertNull($this->buffer);
+        self::assertNull($this->buffer);
+
         $this->events->emit('some:event');
-        $this->assertEquals('Work', $this->buffer);
+        self::assertEquals('Work', $this->buffer);
     }
 
     public function testEventWithoutListeners()
     {
         $this->events->emit('some:event');
-        $this->assertNull($this->buffer);
+        self::assertNull($this->buffer);
     }
 
     public function testClosureHandler()
@@ -52,15 +53,15 @@ class EventsTest extends \PHPUnit_Framework_TestCase
         $this->events->on('name', $handler);
         $this->events->emit('name');
 
-        $this->assertEquals('closure', $this->buffer);
+        self::assertEquals('closure', $this->buffer);
     }
 
     public function testChain()
     {
         $expected = __NAMESPACE__ . '\EventsInterface';
-        $this->assertInstanceOf($expected, $this->events->on('some', [$this, 'customEventHandler']));
-        $this->assertInstanceOf($expected, $this->events->emit('some'));
-        $this->assertInstanceOf($expected, $this->events->off('some', [$this, 'customEventHandler']));
-        $this->assertInstanceOf($expected, $this->events->emit('some'));
+        self::assertInstanceOf($expected, $this->events->on('some', [$this, 'customEventHandler']));
+        self::assertInstanceOf($expected, $this->events->emit('some'));
+        self::assertInstanceOf($expected, $this->events->off('some', [$this, 'customEventHandler']));
+        self::assertInstanceOf($expected, $this->events->emit('some'));
     }
 }

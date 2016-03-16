@@ -11,16 +11,18 @@ class Events extends BaseEvents implements EventsInterface
      */
     public function emit($name, array $arguments = [])
     {
-        if (array_key_exists($name, $this->listeners)) {
-            $this->sortListeners($name);
-            foreach ($this->listeners[$name] as $handlers) {
-                foreach ($handlers as $paramsHandler) {
-                    $arguments = array_merge($arguments, $paramsHandler['extraArguments']);
-                    call_user_func_array($paramsHandler['handler'], $arguments);
-                }
-            }
-        }
-
+        $this->trigger($name, $arguments);
         return $this;
+    }
+
+    /**
+     * @param array $arguments
+     * @param array $extraArguments
+     * @param null $value
+     * @return array
+     */
+    protected function getCallArgs(array $arguments, array $extraArguments, $value = null)
+    {
+        return array_merge($arguments, $extraArguments);
     }
 }
