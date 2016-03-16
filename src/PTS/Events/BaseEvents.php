@@ -5,6 +5,13 @@ abstract class BaseEvents
 {
     /** @var array */
     protected $listeners = [];
+    /** @var Handler */
+    protected $handler;
+
+    public function __construct()
+    {
+        $this->handler = new Handler;
+    }
 
     /**
      * @return array
@@ -33,7 +40,7 @@ abstract class BaseEvents
      */
     public function on($name, callable $handler, $priority = 50, array $extraArguments = [])
     {
-        $handlerId = $this->createHandlerId($handler);
+        $handlerId = $this->handler->getKey($handler);
         $this->listeners[$name][$priority][$handlerId] = [
             'handler' => $handler,
             'extraArguments' => $extraArguments,
@@ -86,14 +93,12 @@ abstract class BaseEvents
      */
     protected function offHandlerWithPriority($eventName, callable $handler, $priority = 50)
     {
-        $handlerId = $this->createHandlerId($handler);
+        $handlerId = $this->handler->getKey($handler);
 
         if (isset($this->listeners[$eventName][$priority][$handlerId])) {
             unset($this->listeners[$eventName][$priority][$handlerId]);
 
-            if (empty($this->listeners[$eventName][$priority])) {
-                unset($this->listeners[$eventName][$priority]);
-            }
+            $this->cleanEmptyEvent($eventName, $priority);
         }
 
         return $this;
@@ -106,16 +111,13 @@ abstract class BaseEvents
      */
     protected function offHandlerWithoutPriority($eventName, callable $handler)
     {
-        $handlerId = $this->createHandlerId($handler);
+        $handlerId = $this->handler->getKey($handler);
 
         foreach ($this->listeners[$eventName] as $currentPriority => $nandlers) {
             foreach ($nandlers as $currentHandlerId => $paramsHandler) {
                 if ($handlerId === $currentHandlerId) {
                     unset($this->listeners[$eventName][$currentPriority][$handlerId]);
-
-                    if (empty($this->listeners[$eventName][$currentPriority])) {
-                        unset($this->listeners[$eventName][$currentPriority]);
-                    }
+                    $this->cleanEmptyEvent($eventName, $currentPriority);
                 }
             }
         }
@@ -124,21 +126,14 @@ abstract class BaseEvents
     }
 
     /**
-     * @param callable $handler
-     * @return string
+     * @param string $eventName
+     * @param int $currentPriority
      */
-    protected function createHandlerId(callable $handler)
+    protected function cleanEmptyEvent($eventName, $currentPriority)
     {
-        if (is_array($handler)) {
-            list($className, $method) = $handler;
-            if (is_object($className)) {
-                $className = get_class($className);
-            }
-
-            return $className . '::' . $method;
+        if (empty($this->listeners[$eventName][$currentPriority])) {
+            unset($this->listeners[$eventName][$currentPriority]);
         }
-
-        return is_string($handler) ? $handler : spl_object_hash($handler);
     }
 
     /**
