@@ -128,4 +128,17 @@ class FiltersTest extends \PHPUnit_Framework_TestCase
         self::assertInstanceOf($expected, $this->filters->on('some', 'trim'));
         self::assertInstanceOf($expected, $this->filters->off('some', 'trim'));
     }
+
+    public function testStopPropagation()
+    {
+        $rawTitle = '  Hello world!!!  ';
+        $this->filters->on('before_output_title', 'trim');
+        $this->filters->on('before_output_title', function($value){
+            throw (new StopPropagation)->setValue($value);
+        });
+        $this->filters->on('before_output_title', [$this, 'customFilterHandler']);
+        $title = $this->filters->filter('before_output_title', $rawTitle);
+
+        self::assertEquals('Hello world!!!', $title);
+    }
 }

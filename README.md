@@ -63,6 +63,16 @@ $events->on('post:title', 'trim', 10);
 $events->off('post:title');
 ```
 
+#### Прерывание распространения события
+
+Чтобы прервать выполнение последующих обрабочтиков событий, необходимо кинуть исключение типа StopPropagation
+
+```php
+$events->on('eventName', function(){...});
+$events->on('eventName', function(){ throw new StopPropagation; });
+$events->on('eventName', function(){...}); // it does not work
+```
+
 ## Фильтры
 Фильтры очень похожи на события. В момент срабатывания события фильтрации нужно обязательно передать значение, которое будет пропущено через фильтры. 
 
@@ -83,4 +93,16 @@ $filters = new Filters;
 
 $filters->on('post:title', 'trim');
 $title = $filters->filter('post:title', ' Raw title!!!');
+```
+
+
+#### Прерывание распространения фильтра
+
+Чтобы прервать выполнение последующих обрабочтиков фильтра, необходимо кинуть исключение типа StopPropagation
+
+```php
+$filters->on('eventName', function($value){ return $value . ' _'; });
+$filters->on('eventName', function(value){ throw (new StopPropagation)->setValue(value); });
+$filters->on('eventName', function(value){ return $value . ' 2';}); // it does not work
+$title = $filters->filter('pre_title', ' Raw title!!!'); //  'Raw title!!! _'
 ```

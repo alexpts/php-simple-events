@@ -64,4 +64,22 @@ class EventsTest extends \PHPUnit_Framework_TestCase
         self::assertInstanceOf($expected, $this->events->off('some', [$this, 'customEventHandler']));
         self::assertInstanceOf($expected, $this->events->emit('some'));
     }
+
+    public function testStopPropagation()
+    {
+        $handler = \Closure::bind(function() {
+            $this->buffer = 'closure';
+            throw new StopPropagation;
+        }, $this, get_class($this));
+
+        $handler2 = \Closure::bind(function() {
+            $this->buffer = 'closure2';
+        }, $this, get_class($this));
+
+        $this->events->on('name', $handler);
+        $this->events->on('name', $handler2);
+        $this->events->emit('name');
+
+        self::assertEquals('closure', $this->buffer);
+    }
 }
