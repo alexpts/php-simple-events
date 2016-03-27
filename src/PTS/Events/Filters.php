@@ -12,6 +12,10 @@ class Filters extends BaseEvents implements FiltersInterface
      */
     public function filter($name, $value, array $arguments = [])
     {
-        return $this->trigger($name, $arguments, $value);
+        try {
+            return $this->trigger($name, $arguments, $value);
+        } catch (StopPropagation $e) {
+            return $e->getValue();
+        }
     }
 }

@@ -11,7 +11,10 @@ class Events extends BaseEvents implements EventsInterface
      */
     public function emit($name, array $arguments = [])
     {
-        $this->trigger($name, $arguments);
+        try {
+            $this->trigger($name, $arguments);
+        } catch (StopPropagation $e) {}
+
         return $this;
     }
 
