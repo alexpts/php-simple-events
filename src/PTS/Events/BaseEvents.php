@@ -3,7 +3,7 @@ namespace PTS\Events;
 
 abstract class BaseEvents
 {
-    /** @var array */
+    /** @var array[][] */
     protected $listeners = [];
     /** @var Handler */
     protected $handler;
@@ -44,7 +44,24 @@ abstract class BaseEvents
         $this->listeners[$name][$priority][$handlerId] = [
             'handler' => $handler,
             'extraArguments' => $extraArguments,
+            'priority' => $priority,
         ];
+
+        return $this;
+    }
+
+    /**
+     * @param string $name
+     * @param callable $handler
+     * @param int $priority
+     * @param array $extraArguments
+     * @return $this
+     */
+    public function once($name, callable $handler, $priority = 50, array $extraArguments = [])
+    {
+        $this->on($name, $handler, $priority, $extraArguments);
+        $handlerId = $this->handler->getKey($handler);
+        $this->listeners[$name][$priority][$handlerId]['once'] = true;
 
         return $this;
     }
@@ -150,11 +167,23 @@ abstract class BaseEvents
                 foreach ($handlers as $paramsHandler) {
                     $callArgs = $this->getCallArgs($arguments, $paramsHandler['extraArguments'], $value);
                     $value = call_user_func_array($paramsHandler['handler'], $callArgs);
+                    $this->offOnce($paramsHandler, $name);
                 }
             }
         }
 
         return $value;
+    }
+
+    /**
+     * @param array $paramsHandler
+     * @param string $name
+     */
+    protected function offOnce(array $paramsHandler, $name)
+    {
+        if (array_key_exists('once', $paramsHandler) && $paramsHandler['once']) {
+            $this->off($name, $paramsHandler['handler'], $paramsHandler['priority']);
+        }
     }
 
 

@@ -22,6 +22,8 @@ emit($name, array $arguments = []);
 
 on($name, callable $handler, $priority = 50, array $extraArguments = []);
 
+once($name, callable $handler, $priority = 50, array $extraArguments = []);
+
 off($name, callable $handler = null, $priority = null);
  ```
 
@@ -36,7 +38,7 @@ $events->on('some:event', function(){ ... });
 $events->on('some:event', 'trim');
 $events->on('some', ['ClassName', 'method']);
 $events->on('some', [$this, 'method']);
-$events->on('some', $instanceWithInvokeMethod);
+$events->once('some', $instanceWithInvokeMethod);
 ```
 
 #### Порядок обработчиков
@@ -83,6 +85,7 @@ $events->on('eventName', function(){...}); // it does not work
 ```php
 filter($name, $value, array $arguments = []);
 on($name, callable $handler, $priority = 50, array $extraArguments = []);
+once($name, callable $handler, $priority = 50, array $extraArguments = []);
 off($name, callable $handler = null, $priority = null);
 ```
 

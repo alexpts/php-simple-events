@@ -21,6 +21,15 @@ interface FiltersInterface
     public function on($name, callable $handler, $priority = 50, array $extraArguments = []);
 
     /**
+     * @param string $name
+     * @param callable $handler
+     * @param int $priority
+     * @param array $extraArguments
+     * @return FiltersInterface
+     */
+    public function once($name, callable $handler, $priority = 50, array $extraArguments = []);
+
+    /**
      * @param string $eventName
      * @param callable|null $handler
      * @param null|int $priority

@@ -141,4 +141,14 @@ class FiltersTest extends \PHPUnit_Framework_TestCase
 
         self::assertEquals('Hello world!!!', $title);
     }
+
+    public function testOnceHandler()
+    {
+        $rawTitle = '  Hello world!!!  ';
+        $this->filters->once('before_output_title', 'trim');
+        $this->filters->filter('before_output_title', $rawTitle);
+        $title = $this->filters->filter('before_output_title', $rawTitle);
+
+        self::assertEquals($rawTitle, $title);
+    }
 }
