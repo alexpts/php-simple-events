@@ -10,7 +10,7 @@ class Filters extends BaseEvents implements FiltersInterface
      *
      * @return mixed
      */
-    public function filter($name, $value, array $arguments = [])
+    public function filter(string $name, $value, array $arguments = [])
     {
         try {
             return $this->trigger($name, $arguments, $value);

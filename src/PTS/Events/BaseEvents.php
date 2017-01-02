@@ -13,32 +13,19 @@ abstract class BaseEvents
         $this->handler = new Handler;
     }
 
-    /**
-     * @return array
-     */
-    public function getListeners()
+    public function getListeners() : array
     {
         return $this->listeners;
     }
 
-    /**
-     * @param string $name
-     */
-    protected function sortListeners($name)
+    protected function sortListeners(string $name) : void
     {
         if (array_key_exists($name, $this->listeners)) {
             krsort($this->listeners[$name], SORT_NUMERIC);
         }
     }
 
-    /**
-     * @param string $name
-     * @param callable $handler
-     * @param int $priority
-     * @param array $extraArguments
-     * @return $this
-     */
-    public function on($name, callable $handler, $priority = 50, array $extraArguments = [])
+    public function on(string $name, callable $handler, int $priority = 50, array $extraArguments = [])
     {
         $handlerId = $this->handler->getKey($handler);
         $this->listeners[$name][$priority][$handlerId] = [
@@ -50,14 +37,7 @@ abstract class BaseEvents
         return $this;
     }
 
-    /**
-     * @param string $name
-     * @param callable $handler
-     * @param int $priority
-     * @param array $extraArguments
-     * @return $this
-     */
-    public function once($name, callable $handler, $priority = 50, array $extraArguments = [])
+    public function once(string $name, callable $handler, int $priority = 50, array $extraArguments = [])
     {
         $this->on($name, $handler, $priority, $extraArguments);
         $handlerId = $this->handler->getKey($handler);
@@ -66,11 +46,7 @@ abstract class BaseEvents
         return $this;
     }
 
-    /**
-     * @param string $eventName
-     * @return $this
-     */
-    protected function offAll($eventName)
+    protected function offAll(string $eventName)
     {
         if (array_key_exists($eventName, $this->listeners)) {
             unset($this->listeners[$eventName]);
@@ -79,13 +55,7 @@ abstract class BaseEvents
         return $this;
     }
 
-    /**
-     * @param string $eventName
-     * @param callable|null $handler
-     * @param null|int $priority
-     * @return $this
-     */
-    public function off($eventName, callable $handler = null, $priority = null)
+    public function off(string $eventName, callable $handler = null, int $priority = null)
     {
         if ($handler === null) {
             return $this->offAll($eventName);
@@ -102,13 +72,7 @@ abstract class BaseEvents
         return $this;
     }
 
-    /**
-     * @param string $eventName
-     * @param callable $handler
-     * @param int $priority
-     * @return $this
-     */
-    protected function offHandlerWithPriority($eventName, callable $handler, $priority = 50)
+    protected function offHandlerWithPriority(string $eventName, callable $handler, int $priority = 50)
     {
         $handlerId = $this->handler->getKey($handler);
 
@@ -121,12 +85,7 @@ abstract class BaseEvents
         return $this;
     }
 
-    /**
-     * @param string $eventName
-     * @param callable $handler
-     * @return $this
-     */
-    protected function offHandlerWithoutPriority($eventName, callable $handler)
+    protected function offHandlerWithoutPriority(string $eventName, callable $handler)
     {
         $handlerId = $this->handler->getKey($handler);
 
@@ -142,11 +101,7 @@ abstract class BaseEvents
         return $this;
     }
 
-    /**
-     * @param string $eventName
-     * @param int $currentPriority
-     */
-    protected function cleanEmptyEvent($eventName, $currentPriority)
+    protected function cleanEmptyEvent(string $eventName, int $currentPriority) : void
     {
         if (empty($this->listeners[$eventName][$currentPriority])) {
             unset($this->listeners[$eventName][$currentPriority]);
@@ -157,9 +112,10 @@ abstract class BaseEvents
      * @param string $name
      * @param array $arguments
      * @param mixed $value
+     *
      * @return mixed
      */
-    protected function trigger($name, array $arguments = [], $value = null)
+    protected function trigger(string $name, array $arguments = [], $value = null)
     {
         if (array_key_exists($name, $this->listeners)) {
             $this->sortListeners($name);
@@ -175,28 +131,18 @@ abstract class BaseEvents
         return $value;
     }
 
-    /**
-     * @param array $paramsHandler
-     * @param string $name
-     */
-    protected function offOnce(array $paramsHandler, $name)
+    protected function offOnce(array $paramsHandler, string $name) : void
     {
         if (array_key_exists('once', $paramsHandler) && $paramsHandler['once']) {
             $this->off($name, $paramsHandler['handler'], $paramsHandler['priority']);
         }
     }
 
-
-    /**
-     * @param array $arguments
-     * @param array $extraArguments
-     * @param null $value
-     * @return array
-     */
-    protected function getCallArgs(array $arguments, array $extraArguments, $value = null)
+    protected function getCallArgs(array $arguments, array $extraArguments, $value = null) : array
     {
         $arguments = array_merge($arguments, $extraArguments);
         array_unshift($arguments, $value);
+
         return $arguments;
     }
 }

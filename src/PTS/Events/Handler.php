@@ -10,7 +10,7 @@ class Handler
     public function getKey(callable $handler)
     {
         if (is_array($handler)) {
-            list($className, $method) = $handler;
+            [$className, $method] = $handler;
             if (is_object($className)) {
                 $className = get_class($className);
             }
