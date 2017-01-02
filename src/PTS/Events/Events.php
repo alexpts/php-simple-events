@@ -7,7 +7,9 @@ class Events extends BaseEvents implements EventsInterface
     {
         try {
             $this->trigger($name, $arguments);
-        } catch (StopPropagation $e) {}
+        } catch (StopPropagation $e) {
+            return $this;
+        }
 
         return $this;
     }
