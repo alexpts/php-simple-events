@@ -13,19 +13,27 @@ abstract class BaseEvents
         $this->handler = new Handler;
     }
 
-    public function getListeners() : array
+    public function getListeners(): array
     {
         return $this->listeners;
     }
 
-    protected function sortListeners(string $name) : void
+    protected function sortListeners(string $name): void
     {
         if (array_key_exists($name, $this->listeners)) {
             krsort($this->listeners[$name], SORT_NUMERIC);
         }
     }
 
-    public function on(string $name, callable $handler, int $priority = 50, array $extraArguments = [])
+	/**
+	 * @param string $name
+	 * @param callable $handler
+	 * @param int $priority
+	 * @param array $extraArguments
+	 *
+	 * @return $this
+	 */
+    public function on(string $name, callable $handler, int $priority = 50, array $extraArguments = []): self
     {
         $handlerId = $this->handler->getKey($handler);
         $this->listeners[$name][$priority][$handlerId] = [
@@ -37,7 +45,15 @@ abstract class BaseEvents
         return $this;
     }
 
-    public function once(string $name, callable $handler, int $priority = 50, array $extraArguments = [])
+	/**
+	 * @param string $name
+	 * @param callable $handler
+	 * @param int $priority
+	 * @param array $extraArguments
+	 *
+	 * @return $this
+	 */
+    public function once(string $name, callable $handler, int $priority = 50, array $extraArguments = []): self
     {
         $this->on($name, $handler, $priority, $extraArguments);
         $handlerId = $this->handler->getKey($handler);
@@ -46,7 +62,12 @@ abstract class BaseEvents
         return $this;
     }
 
-    protected function offAll(string $eventName)
+	/**
+	 * @param string $eventName
+	 *
+	 * @return $this
+	 */
+    protected function offAll(string $eventName): self
     {
         if (array_key_exists($eventName, $this->listeners)) {
             unset($this->listeners[$eventName]);
@@ -55,7 +76,14 @@ abstract class BaseEvents
         return $this;
     }
 
-    public function off(string $eventName, callable $handler = null, int $priority = null)
+	/**
+	 * @param string $eventName
+	 * @param callable|null $handler
+	 * @param int|null $priority
+	 *
+	 * @return $this
+	 */
+    public function off(string $eventName, callable $handler = null, int $priority = null): self
     {
         if ($handler === null) {
             return $this->offAll($eventName);
@@ -72,7 +100,14 @@ abstract class BaseEvents
         return $this;
     }
 
-    protected function offHandlerWithPriority(string $eventName, callable $handler, int $priority = 50)
+	/**
+	 * @param string $eventName
+	 * @param callable $handler
+	 * @param int $priority
+	 *
+	 * @return $this
+	 */
+    protected function offHandlerWithPriority(string $eventName, callable $handler, int $priority = 50): self
     {
         $handlerId = $this->handler->getKey($handler);
 
@@ -85,7 +120,13 @@ abstract class BaseEvents
         return $this;
     }
 
-    protected function offHandlerWithoutPriority(string $eventName, callable $handler)
+	/**
+	 * @param string $eventName
+	 * @param callable $handler
+	 *
+	 * @return $this
+	 */
+    protected function offHandlerWithoutPriority(string $eventName, callable $handler): self
     {
         $handlerId = $this->handler->getKey($handler);
 
@@ -131,14 +172,25 @@ abstract class BaseEvents
         return $value;
     }
 
-    protected function offOnce(array $paramsHandler, string $name) : void
+	/**
+	 * @param array $paramsHandler
+	 * @param string $name
+	 */
+    protected function offOnce(array $paramsHandler, string $name): void
     {
         if (array_key_exists('once', $paramsHandler) && $paramsHandler['once']) {
             $this->off($name, $paramsHandler['handler'], $paramsHandler['priority']);
         }
     }
 
-    protected function getCallArgs(array $arguments, array $extraArguments, $value = null) : array
+	/**
+	 * @param array $arguments
+	 * @param array $extraArguments
+	 * @param mixed $value
+	 *
+	 * @return array
+	 */
+    protected function getCallArgs(array $arguments, array $extraArguments, $value = null): array
     {
         $arguments = array_merge($arguments, $extraArguments);
         array_unshift($arguments, $value);

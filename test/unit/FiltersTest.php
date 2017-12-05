@@ -1,8 +1,9 @@
 <?php
 namespace PTS\Events;
 
-class FiltersTest extends \PHPUnit_Framework_TestCase
-{
+use PHPUnit\Framework\TestCase;
+
+class FiltersTest extends TestCase {
     /** @var Filters */
     protected $filters;
 
@@ -16,13 +17,12 @@ class FiltersTest extends \PHPUnit_Framework_TestCase
      * @param int $length
      * @return string
      */
-    public function customFilterHandler($value, $length = 4)
+    public function customFilterHandler($value, $length = 4): string
     {
         return substr($value, 0, $length);
     }
 
-
-    public function testGetListeners()
+    public function testGetListeners(): void
     {
         $listeners1 = $this->filters->getListeners();
         $this->filters->on('some:id', 'trim');
@@ -32,7 +32,7 @@ class FiltersTest extends \PHPUnit_Framework_TestCase
         self::assertCount(1, $listeners2);
     }
 
-    public function testSimpleFilter()
+    public function testSimpleFilter(): void
     {
         $title = ' Hello world!!!  ';
         $this->filters->on('before_output_title', 'trim');
@@ -41,7 +41,7 @@ class FiltersTest extends \PHPUnit_Framework_TestCase
         self::assertEquals(trim($title), $title);
     }
 
-    public function testFilterWithoutListeners()
+    public function testFilterWithoutListeners(): void
     {
         $rawTitle = ' Hello world!!!  ';
         $title = $this->filters->filter('before_output_title', $rawTitle);
@@ -49,7 +49,7 @@ class FiltersTest extends \PHPUnit_Framework_TestCase
         self::assertEquals($rawTitle, $title);
     }
 
-    public function testFilterWithExtraEmitArguments()
+    public function testFilterWithExtraEmitArguments(): void
     {
         $rawTitle = 'Hello world!!!  ';
         $this->filters->on('before_output_title', [$this, 'customFilterHandler']);
@@ -58,7 +58,7 @@ class FiltersTest extends \PHPUnit_Framework_TestCase
         self::assertEquals('Hello', $title);
     }
 
-    public function testFilterWithExtraOnArguments()
+    public function testFilterWithExtraOnArguments(): void
     {
         $rawTitle = 'Hello world!!!  ';
         $this->filters->on('before_output_title', [$this, 'customFilterHandler'], 50, [5]);
@@ -67,8 +67,7 @@ class FiltersTest extends \PHPUnit_Framework_TestCase
         self::assertEquals('Hello', $title);
     }
 
-
-    public function testOffHandlerWithPriority()
+    public function testOffHandlerWithPriority(): void
     {
         $rawTitle = 'Hello world!!!  ';
         $this->filters->on('before_output_title', 'trim', 30);
@@ -79,7 +78,7 @@ class FiltersTest extends \PHPUnit_Framework_TestCase
         self::assertCount(0, $this->filters->getListeners());
     }
 
-    public function testOffHandlerWithoutPriority()
+    public function testOffHandlerWithoutPriority(): void
     {
         $rawTitle = 'Hello world!!!  ';
         $this->filters->on('before_output_title', 'trim');
@@ -90,7 +89,7 @@ class FiltersTest extends \PHPUnit_Framework_TestCase
         self::assertCount(0, $this->filters->getListeners());
     }
 
-    public function testOffAllHndlers()
+    public function testOffAllHandlers(): void
     {
         $rawTitle = 'Hello world!!!  ';
         $this->filters->on('before_output_title', 'trim');
@@ -101,7 +100,7 @@ class FiltersTest extends \PHPUnit_Framework_TestCase
         self::assertCount(0, $this->filters->getListeners());
     }
 
-    public function testOrderHandler()
+    public function testOrderHandler(): void
     {
         $rawTitle = '  Hello world!!!  ';
         $this->filters->on('before_output_title', 'trim', 30);
@@ -111,7 +110,7 @@ class FiltersTest extends \PHPUnit_Framework_TestCase
         self::assertEquals('Hell', $title);
     }
 
-    public function test2OrderHandler()
+    public function test2OrderHandler(): void
     {
         $rawTitle = '  Hello world!!!  ';
         $this->filters->on('before_output_title', 'trim', 30);
@@ -121,7 +120,7 @@ class FiltersTest extends \PHPUnit_Framework_TestCase
         self::assertEquals('He', $title);
     }
 
-    public function testChain()
+    public function testChain(): void
     {
         $expected = __NAMESPACE__ . '\FiltersInterface';
 
@@ -129,7 +128,7 @@ class FiltersTest extends \PHPUnit_Framework_TestCase
         self::assertInstanceOf($expected, $this->filters->off('some', 'trim'));
     }
 
-    public function testStopPropagation()
+    public function testStopPropagation(): void
     {
         $rawTitle = '  Hello world!!!  ';
         $this->filters->on('before_output_title', 'trim');
@@ -142,7 +141,7 @@ class FiltersTest extends \PHPUnit_Framework_TestCase
         self::assertEquals('Hello world!!!', $title);
     }
 
-    public function testOnceHandler()
+    public function testOnceHandler(): void
     {
         $rawTitle = '  Hello world!!!  ';
         $this->filters->once('before_output_title', 'trim');

@@ -1,7 +1,9 @@
 <?php
 namespace PTS\Events;
 
-class EventsTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class EventsTest extends TestCase
 {
     /** @var Events */
     protected $events;
@@ -14,12 +16,12 @@ class EventsTest extends \PHPUnit_Framework_TestCase
         $this->buffer = null;
     }
 
-    public function customEventHandler()
+    public function customEventHandler(): void
     {
         $this->buffer = 'Work';
     }
 
-    public function testGetListeners()
+    public function testGetListeners(): void
     {
         $listeners1 = $this->events->getListeners();
         $this->events->on('some:event', 'trim');
@@ -29,7 +31,7 @@ class EventsTest extends \PHPUnit_Framework_TestCase
         self::assertCount(1, $listeners2);
     }
 
-    public function testSimpleEvent()
+    public function testSimpleEvent(): void
     {
         $this->events->on('some:event', [$this, 'customEventHandler']);
         self::assertNull($this->buffer);
@@ -38,13 +40,13 @@ class EventsTest extends \PHPUnit_Framework_TestCase
         self::assertEquals('Work', $this->buffer);
     }
 
-    public function testEventWithoutListeners()
+    public function testEventWithoutListeners(): void
     {
         $this->events->emit('some:event');
         self::assertNull($this->buffer);
     }
 
-    public function testClosureHandler()
+    public function testClosureHandler(): void
     {
         $handler = \Closure::bind(function() {
             $this->buffer = 'closure';
@@ -56,7 +58,7 @@ class EventsTest extends \PHPUnit_Framework_TestCase
         self::assertEquals('closure', $this->buffer);
     }
 
-    public function testChain()
+    public function testChain(): void
     {
         $expected = __NAMESPACE__ . '\EventsInterface';
         self::assertInstanceOf($expected, $this->events->on('some', [$this, 'customEventHandler']));
@@ -65,7 +67,7 @@ class EventsTest extends \PHPUnit_Framework_TestCase
         self::assertInstanceOf($expected, $this->events->emit('some'));
     }
 
-    public function testStopPropagation()
+    public function testStopPropagation(): void
     {
         $handler = \Closure::bind(function() {
             $this->buffer = 'closure';
