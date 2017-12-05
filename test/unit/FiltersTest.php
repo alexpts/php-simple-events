@@ -1,7 +1,10 @@
 <?php
-namespace PTS\Events;
+namespace test\unit;
 
 use PHPUnit\Framework\TestCase;
+use PTS\Events\Filters;
+use PTS\Events\FiltersInterface;
+use PTS\Events\StopPropagation;
 
 class FiltersTest extends TestCase {
     /** @var Filters */
@@ -9,7 +12,7 @@ class FiltersTest extends TestCase {
 
     protected function setUp()
     {
-        $this->filters = new Filters();
+        $this->filters = new Filters;
     }
 
     /**
@@ -17,7 +20,7 @@ class FiltersTest extends TestCase {
      * @param int $length
      * @return string
      */
-    public function customFilterHandler($value, $length = 4): string
+    public function customFilterHandler(string $value, $length = 4): string
     {
         return substr($value, 0, $length);
     }
@@ -122,7 +125,7 @@ class FiltersTest extends TestCase {
 
     public function testChain(): void
     {
-        $expected = __NAMESPACE__ . '\FiltersInterface';
+        $expected = FiltersInterface::class;
 
         self::assertInstanceOf($expected, $this->filters->on('some', 'trim'));
         self::assertInstanceOf($expected, $this->filters->off('some', 'trim'));

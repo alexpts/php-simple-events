@@ -33,7 +33,7 @@ abstract class BaseEvents
 	 *
 	 * @return $this
 	 */
-    public function on(string $name, callable $handler, int $priority = 50, array $extraArguments = []): self
+    public function on(string $name, callable $handler, int $priority = 50, array $extraArguments = [])
     {
         $handlerId = $this->handler->getKey($handler);
         $this->listeners[$name][$priority][$handlerId] = [

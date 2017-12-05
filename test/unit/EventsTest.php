@@ -1,7 +1,10 @@
 <?php
-namespace PTS\Events;
+namespace test\unit;
 
 use PHPUnit\Framework\TestCase;
+use PTS\Events\Events;
+use PTS\Events\EventsInterface;
+use PTS\Events\StopPropagation;
 
 class EventsTest extends TestCase
 {
@@ -12,7 +15,7 @@ class EventsTest extends TestCase
 
     protected function setUp()
     {
-        $this->events = new Events();
+        $this->events = new Events;
         $this->buffer = null;
     }
 
@@ -60,7 +63,7 @@ class EventsTest extends TestCase
 
     public function testChain(): void
     {
-        $expected = __NAMESPACE__ . '\EventsInterface';
+        $expected = EventsInterface::class;
         self::assertInstanceOf($expected, $this->events->on('some', [$this, 'customEventHandler']));
         self::assertInstanceOf($expected, $this->events->emit('some'));
         self::assertInstanceOf($expected, $this->events->off('some', [$this, 'customEventHandler']));

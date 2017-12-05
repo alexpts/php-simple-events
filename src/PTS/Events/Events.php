@@ -9,7 +9,7 @@ class Events extends BaseEvents implements EventsInterface
 	 *
 	 * @return $this
 	 */
-    public function emit(string $name, array $arguments = []): self
+    public function emit(string $name, array $arguments = [])
     {
         try {
             $this->trigger($name, $arguments);
