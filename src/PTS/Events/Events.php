@@ -1,14 +1,15 @@
 <?php
+
 namespace PTS\Events;
 
 class Events extends BaseEvents implements EventsInterface
 {
-	/**
-	 * @param string $name
-	 * @param array $arguments
-	 *
-	 * @return $this
-	 */
+    /**
+     * @param string $name
+     * @param array $arguments
+     *
+     * @return $this
+     */
     public function emit(string $name, array $arguments = [])
     {
         try {

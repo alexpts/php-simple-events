@@ -1,10 +1,11 @@
 <?php
+
 namespace PTS\Events;
 
 class Handler
 {
 
-    public function getKey(callable $handler) : string
+    public function getKey(callable $handler): string
     {
         if (is_array($handler)) {
             list($className, $method) = $handler;

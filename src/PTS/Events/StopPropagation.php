@@ -1,4 +1,5 @@
 <?php
+
 namespace PTS\Events;
 
 class StopPropagation extends \Exception
@@ -6,7 +7,7 @@ class StopPropagation extends \Exception
     /** @var mixed */
     public $value;
 
-    public function setValue($value) : self
+    public function setValue($value): self
     {
         $this->value = $value;
         return $this;

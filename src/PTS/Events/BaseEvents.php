@@ -1,4 +1,5 @@
 <?php
+
 namespace PTS\Events;
 
 abstract class BaseEvents
@@ -25,14 +26,14 @@ abstract class BaseEvents
         }
     }
 
-	/**
-	 * @param string $name
-	 * @param callable $handler
-	 * @param int $priority
-	 * @param array $extraArguments
-	 *
-	 * @return $this
-	 */
+    /**
+     * @param string $name
+     * @param callable $handler
+     * @param int $priority
+     * @param array $extraArguments
+     *
+     * @return $this
+     */
     public function on(string $name, callable $handler, int $priority = 50, array $extraArguments = [])
     {
         $handlerId = $this->handler->getKey($handler);
@@ -45,14 +46,14 @@ abstract class BaseEvents
         return $this;
     }
 
-	/**
-	 * @param string $name
-	 * @param callable $handler
-	 * @param int $priority
-	 * @param array $extraArguments
-	 *
-	 * @return $this
-	 */
+    /**
+     * @param string $name
+     * @param callable $handler
+     * @param int $priority
+     * @param array $extraArguments
+     *
+     * @return $this
+     */
     public function once(string $name, callable $handler, int $priority = 50, array $extraArguments = []): self
     {
         $this->on($name, $handler, $priority, $extraArguments);
@@ -62,11 +63,11 @@ abstract class BaseEvents
         return $this;
     }
 
-	/**
-	 * @param string $eventName
-	 *
-	 * @return $this
-	 */
+    /**
+     * @param string $eventName
+     *
+     * @return $this
+     */
     protected function offAll(string $eventName): self
     {
         if (array_key_exists($eventName, $this->listeners)) {
@@ -76,13 +77,13 @@ abstract class BaseEvents
         return $this;
     }
 
-	/**
-	 * @param string $eventName
-	 * @param callable|null $handler
-	 * @param int|null $priority
-	 *
-	 * @return $this
-	 */
+    /**
+     * @param string $eventName
+     * @param callable|null $handler
+     * @param int|null $priority
+     *
+     * @return $this
+     */
     public function off(string $eventName, callable $handler = null, int $priority = null): self
     {
         if ($handler === null) {
@@ -100,13 +101,13 @@ abstract class BaseEvents
         return $this;
     }
 
-	/**
-	 * @param string $eventName
-	 * @param callable $handler
-	 * @param int $priority
-	 *
-	 * @return $this
-	 */
+    /**
+     * @param string $eventName
+     * @param callable $handler
+     * @param int $priority
+     *
+     * @return $this
+     */
     protected function offHandlerWithPriority(string $eventName, callable $handler, int $priority = 50): self
     {
         $handlerId = $this->handler->getKey($handler);
@@ -120,12 +121,12 @@ abstract class BaseEvents
         return $this;
     }
 
-	/**
-	 * @param string $eventName
-	 * @param callable $handler
-	 *
-	 * @return $this
-	 */
+    /**
+     * @param string $eventName
+     * @param callable $handler
+     *
+     * @return $this
+     */
     protected function offHandlerWithoutPriority(string $eventName, callable $handler): self
     {
         $handlerId = $this->handler->getKey($handler);
@@ -142,7 +143,7 @@ abstract class BaseEvents
         return $this;
     }
 
-    protected function cleanEmptyEvent(string $eventName, int $currentPriority) : void
+    protected function cleanEmptyEvent(string $eventName, int $currentPriority): void
     {
         if (empty($this->listeners[$eventName][$currentPriority])) {
             unset($this->listeners[$eventName][$currentPriority]);
@@ -172,10 +173,10 @@ abstract class BaseEvents
         return $value;
     }
 
-	/**
-	 * @param array $paramsHandler
-	 * @param string $name
-	 */
+    /**
+     * @param array $paramsHandler
+     * @param string $name
+     */
     protected function offOnce(array $paramsHandler, string $name): void
     {
         if (array_key_exists('once', $paramsHandler) && $paramsHandler['once']) {
@@ -183,13 +184,13 @@ abstract class BaseEvents
         }
     }
 
-	/**
-	 * @param array $arguments
-	 * @param array $extraArguments
-	 * @param mixed $value
-	 *
-	 * @return array
-	 */
+    /**
+     * @param array $arguments
+     * @param array $extraArguments
+     * @param mixed $value
+     *
+     * @return array
+     */
     protected function getCallArgs(array $arguments, array $extraArguments, $value = null): array
     {
         $arguments = array_merge($arguments, $extraArguments);

@@ -1,4 +1,5 @@
 <?php
+
 namespace PTS\Events;
 
 class Filters extends BaseEvents implements FiltersInterface

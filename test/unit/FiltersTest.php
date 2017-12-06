@@ -1,4 +1,5 @@
 <?php
+
 namespace test\unit;
 
 use PHPUnit\Framework\TestCase;
@@ -6,7 +7,8 @@ use PTS\Events\Filters;
 use PTS\Events\FiltersInterface;
 use PTS\Events\StopPropagation;
 
-class FiltersTest extends TestCase {
+class FiltersTest extends TestCase
+{
     /** @var Filters */
     protected $filters;
 
@@ -135,7 +137,7 @@ class FiltersTest extends TestCase {
     {
         $rawTitle = '  Hello world!!!  ';
         $this->filters->on('before_output_title', 'trim');
-        $this->filters->on('before_output_title', function($value){
+        $this->filters->on('before_output_title', function ($value) {
             throw (new StopPropagation)->setValue($value);
         });
         $this->filters->on('before_output_title', [$this, 'customFilterHandler']);

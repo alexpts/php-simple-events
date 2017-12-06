@@ -1,4 +1,5 @@
 <?php
+
 namespace test\unit;
 
 use PHPUnit\Framework\TestCase;
@@ -51,7 +52,7 @@ class EventsTest extends TestCase
 
     public function testClosureHandler(): void
     {
-        $handler = \Closure::bind(function() {
+        $handler = \Closure::bind(function () {
             $this->buffer = 'closure';
         }, $this, get_class($this));
 
@@ -72,12 +73,12 @@ class EventsTest extends TestCase
 
     public function testStopPropagation(): void
     {
-        $handler = \Closure::bind(function() {
+        $handler = \Closure::bind(function () {
             $this->buffer = 'closure';
             throw new StopPropagation;
         }, $this, get_class($this));
 
-        $handler2 = \Closure::bind(function() {
+        $handler2 = \Closure::bind(function () {
             $this->buffer = 'closure2';
         }, $this, get_class($this));
 
