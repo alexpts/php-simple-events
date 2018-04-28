@@ -9,7 +9,7 @@ interface FiltersInterface
      * @param mixed $value
      * @param array $arguments
      *
-     * @return $this
+     * @return mixed
      */
     public function filter(string $name, $value, array $arguments = []);
 

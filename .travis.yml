@@ -1,6 +1,7 @@
+sudo: false
 language: php
 php:
-  - '7.1'
+  - 7.2
 
 before_script:
   - composer self-update
@@ -8,8 +9,3 @@ before_script:
 
 script:
   - phpunit --configuration ./test/phpunit.xml
-
-after_script:
-  - travis_retry php ./vendor/bin/test-reporter --coverage-report=test/clover.xml
-  - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover test/clover.xml

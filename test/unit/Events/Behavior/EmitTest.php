@@ -12,11 +12,11 @@ use PTS\Events\StopPropagation;
  */
 class EmitTest extends TestCase
 {
-    const TEST_CLASS = Events::class;
-    const TEST_METHOD = 'emit';
+    protected const TEST_CLASS = Events::class;
+    protected const TEST_METHOD = 'emit';
 
     /**
-     * @return \ReflectionMethod
+     * @throws \ReflectionException
      */
     protected function getReflectionMethod(): \ReflectionMethod
     {

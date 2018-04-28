@@ -14,6 +14,8 @@ class FiltersTest extends TestCase
 
     protected function setUp()
     {
+        parent::setUp();
+
         $this->filters = new Filters;
     }
 

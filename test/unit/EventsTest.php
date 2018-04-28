@@ -16,6 +16,8 @@ class EventsTest extends TestCase
 
     protected function setUp()
     {
+        parent::setUp();
+
         $this->events = new Events;
         $this->buffer = null;
     }

@@ -164,7 +164,7 @@ abstract class BaseEvents
             foreach ($this->listeners[$name] as $handlers) {
                 foreach ($handlers as $paramsHandler) {
                     $callArgs = $this->getCallArgs($arguments, $paramsHandler['extraArguments'], $value);
-                    $value = call_user_func_array($paramsHandler['handler'], $callArgs);
+                    $value = $paramsHandler['handler'](...$callArgs);
                     $this->offOnce($paramsHandler, $name);
                 }
             }
