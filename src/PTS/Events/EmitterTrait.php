@@ -23,11 +23,12 @@ trait EmitterTrait
     /**
      * @param string $name
      * @param mixed $value
+     * @param mixed $arguments
      * @return mixed
      */
-    public function filter(string $name, $value)
+    public function filter(string $name, $value, array $arguments = [])
     {
-        return $this->filters ? $this->filters->filter($name, $value) : $value;
+        return $this->filters ? $this->filters->filter($name, $value, $arguments) : $value;
     }
 
     public function emit(string $name, array $arguments = []): void
