@@ -110,3 +110,10 @@ $filters->on('eventName', function(value){ throw (new StopPropagation)->setValue
 $filters->on('eventName', function(value){ return $value . ' 2';}); // it does not work
 $title = $filters->filter('pre_title', ' Raw title!!!'); //  'Raw title!!! _'
 ```
+
+
+### Emitter
+
+Trait EmitterTrait позволяет подмешать метод emit и filter к своему классу, позволяя выкидывать события в шину событий,
+либо пропускать значение через pipe (filters). Для этого помимо включения trait в класс, необходимо передать в класс
+шину событий, через метод setEvents/setFilters, в которую будут выкидываться события.
