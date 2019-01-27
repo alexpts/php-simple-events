@@ -1,14 +1,15 @@
 <?php
+declare(strict_types=1);
 
 namespace PTS\Events;
 
-class Handler
+class ResolveHandler
 {
 
     public function getKey(callable $handler): string
     {
         if (is_array($handler)) {
-            list($className, $method) = $handler;
+            [$className, $method] = $handler;
 
             if (is_object($className)) {
                 $className = get_class($className);

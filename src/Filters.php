@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace PTS\Events;
 
@@ -18,5 +19,13 @@ class Filters extends BaseEvents implements FiltersInterface
         } catch (StopPropagation $e) {
             return $e->getValue();
         }
+    }
+
+    protected function getCallArgs(array $arguments, array $extraArguments, $value = null): array
+    {
+        $arguments = parent::getCallArgs($arguments, $extraArguments, $value);
+        array_unshift($arguments, $value);
+
+        return $arguments;
     }
 }

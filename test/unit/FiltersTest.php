@@ -22,6 +22,7 @@ class FiltersTest extends TestCase
     /**
      * @param string $value
      * @param int $length
+     *
      * @return string
      */
     public function customFilterHandler(string $value, $length = 4): string

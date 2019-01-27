@@ -24,6 +24,7 @@ trait EmitterTrait
      * @param string $name
      * @param mixed $value
      * @param mixed $arguments
+     *
      * @return mixed
      */
     public function filter(string $name, $value, array $arguments = [])

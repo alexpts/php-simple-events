@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace PTS\Events;
 
@@ -19,10 +20,5 @@ class Events extends BaseEvents implements EventsInterface
         }
 
         return $this;
-    }
-
-    protected function getCallArgs(array $arguments, array $extraArguments, $value = null): array
-    {
-        return array_merge($arguments, $extraArguments);
     }
 }
