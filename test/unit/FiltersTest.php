@@ -9,23 +9,17 @@ use PTS\Events\StopPropagation;
 
 class FiltersTest extends TestCase
 {
-    /** @var Filters */
-    protected $filters;
 
-    protected function setUp()
+    protected Filters $filters;
+
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->filters = new Filters;
     }
 
-    /**
-     * @param string $value
-     * @param int $length
-     *
-     * @return string
-     */
-    public function customFilterHandler(string $value, $length = 4): string
+    public function customFilterHandler(string $value, int $length = 4): string
     {
         return substr($value, 0, $length);
     }
@@ -130,17 +124,15 @@ class FiltersTest extends TestCase
 
     public function testChain(): void
     {
-        $expected = FiltersInterface::class;
-
-        self::assertInstanceOf($expected, $this->filters->on('some', 'trim'));
-        self::assertInstanceOf($expected, $this->filters->off('some', 'trim'));
+        self::assertInstanceOf(FiltersInterface::class, $this->filters->on('some', 'trim'));
+        self::assertInstanceOf(FiltersInterface::class, $this->filters->off('some', 'trim'));
     }
 
     public function testStopPropagation(): void
     {
         $rawTitle = '  Hello world!!!  ';
         $this->filters->on('before_output_title', 'trim');
-        $this->filters->on('before_output_title', function ($value) {
+        $this->filters->on('before_output_title', static function ($value) {
             throw (new StopPropagation)->setValue($value);
         });
         $this->filters->on('before_output_title', [$this, 'customFilterHandler']);

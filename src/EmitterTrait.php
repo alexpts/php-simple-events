@@ -5,10 +5,8 @@ namespace PTS\Events;
 
 trait EmitterTrait
 {
-    /** @var EventsInterface|null */
-    protected $events;
-    /** @var FiltersInterface|null */
-    protected $filters;
+    protected ?EventsInterface $events = null;
+    protected ?FiltersInterface $filters = null;
 
     public function setEvents(EventsInterface $events): void
     {

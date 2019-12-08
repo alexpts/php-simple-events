@@ -4,7 +4,6 @@ use Blackfire\Client;
 use Blackfire\Profile\Configuration;
 use PTS\Events\Events;
 use PTS\Events\Filters;
-use PTS\Events\ResolveHandler;
 
 require_once __DIR__  .'/../vendor/autoload.php';
 
@@ -18,9 +17,8 @@ if ($blackfire) {
 }
 
 $startTime = microtime(true);
-$resolver = new ResolveHandler;
-$events = new Events($resolver);
-$filters = new Filters($resolver);
+$events = new Events;
+$filters = new Filters;
 
 
 $events->on('event-a', function (int $a) {

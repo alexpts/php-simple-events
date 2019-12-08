@@ -2,6 +2,7 @@
 
 namespace test\unit;
 
+use Closure;
 use PHPUnit\Framework\TestCase;
 use PTS\Events\Events;
 use PTS\Events\EventsInterface;
@@ -9,12 +10,12 @@ use PTS\Events\StopPropagation;
 
 class EventsTest extends TestCase
 {
-    /** @var Events */
-    protected $events;
+
+    protected Events $events;
     /** @var mixed */
     protected $buffer;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -54,7 +55,7 @@ class EventsTest extends TestCase
 
     public function testClosureHandler(): void
     {
-        $handler = \Closure::bind(function () {
+        $handler = Closure::bind(function () {
             $this->buffer = 'closure';
         }, $this, get_class($this));
 
@@ -75,12 +76,12 @@ class EventsTest extends TestCase
 
     public function testStopPropagation(): void
     {
-        $handler = \Closure::bind(function () {
+        $handler = Closure::bind(function () {
             $this->buffer = 'closure';
             throw new StopPropagation;
         }, $this, get_class($this));
 
-        $handler2 = \Closure::bind(function () {
+        $handler2 = Closure::bind(function () {
             $this->buffer = 'closure2';
         }, $this, get_class($this));
 

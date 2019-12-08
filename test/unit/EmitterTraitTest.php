@@ -9,6 +9,8 @@ use PTS\Events\Events;
 use PTS\Events\EventsInterface;
 use PTS\Events\Filters;
 use PTS\Events\FiltersInterface;
+use ReflectionClass;
+use ReflectionException;
 use ReflectionProperty;
 
 class EmitterTraitTest extends TestCase
@@ -21,7 +23,7 @@ class EmitterTraitTest extends TestCase
     /**
      * @inheritdoc
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -41,11 +43,11 @@ class EmitterTraitTest extends TestCase
      * @param mixed $mock
      * @param string $prop
      * @return ReflectionProperty
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     protected function getTraitProperty($mock, string $prop): ReflectionProperty
     {
-        $class = new \ReflectionClass($mock);
+        $class = new ReflectionClass($mock);
         $prop = $class->getProperty($prop);
         $prop->setAccessible(true);
 
@@ -53,7 +55,7 @@ class EmitterTraitTest extends TestCase
     }
 
     /**
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function testSetEvent(): void
     {
@@ -67,7 +69,7 @@ class EmitterTraitTest extends TestCase
     }
 
     /**
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function testSetFilters(): void
     {
