@@ -15,6 +15,10 @@ coding_style:
     php: {  }
 
 build:
+    environment:
+        php:
+            version: 7.4
+
     tests:
         override:
             -

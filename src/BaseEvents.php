@@ -78,10 +78,8 @@ abstract class BaseEvents
     {
         $handlerId = $this->getHandlerId($handler);
 
-        if (isset($this->listeners[$eventName][$priority][$handlerId])) {
-            unset($this->listeners[$eventName][$priority][$handlerId]);
-            $this->cleanEmptyEvent($eventName, $priority);
-        }
+        unset($this->listeners[$eventName][$priority][$handlerId]);
+        $this->cleanEmptyEvent($eventName, $priority);
 
         return $this;
     }
@@ -116,7 +114,7 @@ abstract class BaseEvents
     protected function offOnce(array $paramsHandler, string $name): void
     {
         if ($paramsHandler['once'] ?? false) {
-            $this->off($name, $paramsHandler['handler'], $paramsHandler['priority']);
+            $this->offHandlerWithPriority($name, $paramsHandler['handler'], $paramsHandler['priority']);
         }
     }
 
