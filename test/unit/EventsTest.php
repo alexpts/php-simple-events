@@ -4,14 +4,15 @@ namespace test\unit;
 
 use Closure;
 use PHPUnit\Framework\TestCase;
-use PTS\Events\Events;
-use PTS\Events\EventsInterface;
+use PTS\Events\EventEmitter;
+use PTS\Events\EventEmitterInterface;
 use PTS\Events\StopPropagation;
+use stdClass;
 
 class EventsTest extends TestCase
 {
 
-    protected Events $events;
+    protected EventEmitter $events;
     /** @var mixed */
     protected $buffer;
 
@@ -19,7 +20,7 @@ class EventsTest extends TestCase
     {
         parent::setUp();
 
-        $this->events = new Events;
+        $this->events = new EventEmitter;
         $this->buffer = null;
     }
 
@@ -30,27 +31,27 @@ class EventsTest extends TestCase
 
     public function testGetListeners(): void
     {
-        $listeners1 = $this->events->getListeners();
-        $this->events->on('some:event', 'trim');
-        $listeners2 = $this->events->getListeners();
+        static::assertCount(0, $this->events->listeners());
 
-        self::assertCount(0, $listeners1);
-        self::assertCount(1, $listeners2);
+        $this->events->on('some:event', 'trim');
+        static::assertCount(1, $this->events->listeners());
+        static::assertCount(1, $this->events->listeners('some:event'));
+        static::assertCount(0, $this->events->listeners('not:defined'));
     }
 
     public function testSimpleEvent(): void
     {
         $this->events->on('some:event', [$this, 'customEventHandler']);
-        self::assertNull($this->buffer);
+        static::assertNull($this->buffer);
 
         $this->events->emit('some:event');
-        self::assertEquals('Work', $this->buffer);
+        static::assertEquals('Work', $this->buffer);
     }
 
     public function testEventWithoutListeners(): void
     {
         $this->events->emit('some:event');
-        self::assertNull($this->buffer);
+        static::assertNull($this->buffer);
     }
 
     public function testClosureHandler(): void
@@ -62,16 +63,16 @@ class EventsTest extends TestCase
         $this->events->on('name', $handler);
         $this->events->emit('name');
 
-        self::assertEquals('closure', $this->buffer);
+        static::assertEquals('closure', $this->buffer);
     }
 
     public function testChain(): void
     {
-        $expected = EventsInterface::class;
-        self::assertInstanceOf($expected, $this->events->on('some', [$this, 'customEventHandler']));
-        self::assertInstanceOf($expected, $this->events->emit('some'));
-        self::assertInstanceOf($expected, $this->events->off('some', [$this, 'customEventHandler']));
-        self::assertInstanceOf($expected, $this->events->emit('some'));
+        $expected = EventEmitterInterface::class;
+        static::assertInstanceOf($expected, $this->events->on('some', [$this, 'customEventHandler']));
+        static::assertInstanceOf($expected, $this->events->emit('some'));
+        static::assertInstanceOf($expected, $this->events->off('some', [$this, 'customEventHandler']));
+        static::assertInstanceOf($expected, $this->events->emit('some'));
     }
 
     public function testStopPropagation(): void
@@ -89,6 +90,30 @@ class EventsTest extends TestCase
         $this->events->on('name', $handler2);
         $this->events->emit('name');
 
-        self::assertEquals('closure', $this->buffer);
+        static::assertEquals('closure', $this->buffer);
+    }
+
+    public function testEventNames(): void
+    {
+        static::assertCount(0, $this->events->eventNames());
+
+        $this->events->on('some:event', 'trim');
+        $names = $this->events->eventNames();
+        static::assertSame(['some:event'], $names);
+    }
+
+    public function testOnce(): void
+    {
+        $obj = new stdClass;
+        $obj->count = 0;
+
+        $this->events->once('once:test', function (stdClass $obj) {
+            $obj->count++;
+        });
+
+        static::assertCount(1, $this->events->listeners());
+        $this->events->emit('once:test', [$obj]);
+        static::assertCount(0, $this->events->listeners());
+        static::assertSame(1, $obj->count);
     }
 }

@@ -5,9 +5,11 @@
     "license": "MIT",
     "type": "library",
     "keywords": [
-        "events",
-        "filters",
-        "emitter"
+        "event",
+        "filter",
+        "emitter",
+        "event-emitter",
+        "event-dispatcher"
     ],
     "authors": [{
         "name": "Alexpts",
@@ -21,8 +23,8 @@
         "php": ">=7.4"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.5",
-        "blackfire/php-sdk": "^1.21"
+        "phpunit/phpunit": "^9.2",
+        "blackfire/php-sdk": "^1.23"
     },
     "autoload": {
         "psr-4": {
