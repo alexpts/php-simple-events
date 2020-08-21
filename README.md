@@ -36,7 +36,7 @@ With priority
 $emitter->on('user.created', $handler, 100);
 ```
 
-With extra arguments (last)
+With extra arguments
 ```php
 $extra1 = 1;
 $extra2 = 'some';
