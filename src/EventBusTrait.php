@@ -5,7 +5,7 @@ namespace PTS\Events;
 
 use PTS\Events\Filter\FilterEmitterInterface;
 
-trait EmitterBusTrait
+trait EventBusTrait
 {
     protected ?EventEmitterInterface $events = null;
     protected ?FilterEmitterInterface $filters = null;

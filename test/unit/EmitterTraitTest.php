@@ -4,7 +4,7 @@ namespace test\unit;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PTS\Events\EmitterBusTrait;
+use PTS\Events\EventBusTrait;
 use PTS\Events\EventEmitter;
 use PTS\Events\EventEmitterInterface;
 use PTS\Events\Filter\FilterEmitter;
@@ -32,11 +32,11 @@ class EmitterTraitTest extends TestCase
     }
 
     /**
-     * @return EmitterBusTrait|MockObject
+     * @return EventBusTrait|MockObject
      */
     protected function getTraitMock()
     {
-        return $this->getMockBuilder(EmitterBusTrait::class)->getMockForTrait();
+        return $this->getMockBuilder(EventBusTrait::class)->getMockForTrait();
     }
 
     /**
