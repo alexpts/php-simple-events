@@ -3,17 +3,19 @@ declare(strict_types=1);
 
 namespace PTS\Events;
 
-trait EmitterTrait
-{
-    protected ?EventsInterface $events = null;
-    protected ?FiltersInterface $filters = null;
+use PTS\Events\Filter\FilterEmitterInterface;
 
-    public function setEvents(EventsInterface $events): void
+trait EventBusTrait
+{
+    protected ?EventEmitterInterface $events = null;
+    protected ?FilterEmitterInterface $filters = null;
+
+    public function setEvents(EventEmitterInterface $events): void
     {
         $this->events = $events;
     }
 
-    public function setFilters(FiltersInterface $filters): void
+    public function setFilters(FilterEmitterInterface $filters): void
     {
         $this->filters = $filters;
     }
@@ -21,13 +23,13 @@ trait EmitterTrait
     /**
      * @param string $name
      * @param mixed $value
-     * @param mixed $arguments
+     * @param array $arguments
      *
-     * @return mixed
+     * @return mixed $value
      */
     public function filter(string $name, $value, array $arguments = [])
     {
-        return $this->filters ? $this->filters->filter($name, $value, $arguments) : $value;
+        return $this->filters ? $this->filters->emit($name, $value, $arguments) : $value;
     }
 
     public function emit(string $name, array $arguments = []): void

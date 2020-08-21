@@ -4,20 +4,20 @@ namespace test\unit;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PTS\Events\EmitterTrait;
-use PTS\Events\Events;
-use PTS\Events\EventsInterface;
-use PTS\Events\Filters;
-use PTS\Events\FiltersInterface;
+use PTS\Events\EventBusTrait;
+use PTS\Events\EventEmitter;
+use PTS\Events\EventEmitterInterface;
+use PTS\Events\Filter\FilterEmitter;
+use PTS\Events\Filter\FilterEmitterInterface;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionProperty;
 
 class EmitterTraitTest extends TestCase
 {
-    /** @var EventsInterface */
+    /** @var EventEmitterInterface */
     protected $events;
-    /** @var FiltersInterface */
+    /** @var FilterEmitterInterface */
     protected $filters;
 
     /**
@@ -27,16 +27,16 @@ class EmitterTraitTest extends TestCase
     {
         parent::setUp();
 
-        $this->events = new Events;
-        $this->filters = new Filters;
+        $this->events = new EventEmitter;
+        $this->filters = new FilterEmitter;
     }
 
     /**
-     * @return EmitterTrait|MockObject
+     * @return EventBusTrait|MockObject
      */
     protected function getTraitMock()
     {
-        return $this->getMockBuilder(EmitterTrait::class)->getMockForTrait();
+        return $this->getMockBuilder(EventBusTrait::class)->getMockForTrait();
     }
 
     /**
@@ -65,7 +65,7 @@ class EmitterTraitTest extends TestCase
         $prop = $this->getTraitProperty($emitter, 'events');
         $actual = $prop->getValue($emitter);
 
-        self::assertInstanceOf(EventsInterface::class, $actual);
+        self::assertInstanceOf(EventEmitterInterface::class, $actual);
     }
 
     /**
@@ -79,7 +79,7 @@ class EmitterTraitTest extends TestCase
         $prop = $this->getTraitProperty($emitter, 'filters');
         $actual = $prop->getValue($emitter);
 
-        self::assertInstanceOf(FiltersInterface::class, $actual);
+        self::assertInstanceOf(FilterEmitterInterface::class, $actual);
     }
 
     /**
