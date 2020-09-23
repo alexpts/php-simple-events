@@ -70,9 +70,7 @@ class EventsTest extends TestCase
     {
         $expected = EventEmitterInterface::class;
         static::assertInstanceOf($expected, $this->events->on('some', [$this, 'customEventHandler']));
-        static::assertInstanceOf($expected, $this->events->emit('some'));
         static::assertInstanceOf($expected, $this->events->off('some', [$this, 'customEventHandler']));
-        static::assertInstanceOf($expected, $this->events->emit('some'));
     }
 
     public function testStopPropagation(): void

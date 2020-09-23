@@ -7,20 +7,14 @@ trait EventEmitterTrait
 {
     /** @var EventHandler[][] */
     protected array $listeners = [];
-    /** @var bool[] */
-    protected array $sorted = [];
 
-    public function emit(string $name, array $args = []): self
+    public function emit(string $name, array $args = []): void
     {
-        $event = $this->listeners[$name] ?? null;
-        if ($event === null) {
-            return $this;
-        }
-
         try {
-            foreach ($this->getSortedListeners($name) as $i => $listener) {
+            foreach ($this->listeners[$name] ?? [] as $i => $listener) {
                 $handler = $listener->handler;
                 $handler(...$args, ...$listener->extraArgs);
+
                 if ($listener->once) {
                     unset($this->listeners[$name][$i]);
                     if (count($this->listeners[$name]) === 0) {
@@ -29,10 +23,8 @@ trait EventEmitterTrait
                 }
             }
         } catch (StopPropagation $e) {
-            return $this;
+            return;
         }
-
-        return $this;
     }
 
     public function listeners(string $event = null): array
@@ -49,33 +41,21 @@ trait EventEmitterTrait
         return array_keys($this->listeners());
     }
 
-    /**
-     * @param string $name
-     *
-     * @return EventHandler[]
-     */
-    protected function getSortedListeners(string $name): array
+    protected function sortEventHandler(string $name): void
     {
-        $isSorted = $this->sorted[$name] ?? false;
-        if (!$isSorted) {
-            $sorted = [];
-
-            foreach ($this->listeners[$name] as $listener) {
-                $sorted[$listener->priority][] = $listener;
-            }
-
-            krsort($sorted, SORT_NUMERIC);
-            $this->listeners[$name] = array_merge(...$sorted);
-            $this->sorted[$name] = true;
+        $sorted = [];
+        foreach ($this->listeners[$name] as $listener) {
+            $sorted[$listener->priority][] = $listener;
         }
 
-        return $this->listeners[$name];
+        krsort($sorted, SORT_NUMERIC);
+        $this->listeners[$name] = array_merge(...$sorted);
     }
 
     public function on(string $name, callable $handler, int $priority = 50, array $extraArgs = []): self
     {
         $this->listeners[$name][] = new EventHandler($handler, $priority, $extraArgs);
-        $this->sorted[$name] = false;
+        $this->sortEventHandler($name);
 
         return $this;
     }
@@ -85,7 +65,8 @@ trait EventEmitterTrait
         $eventHandler = new EventHandler($handler, $priority, $extraArgs);
         $eventHandler->once = true;
         $this->listeners[$name][] = $eventHandler;
-        $this->sorted[$name] = false;
+
+        $this->sortEventHandler($name);
 
         return $this;
     }
@@ -93,7 +74,7 @@ trait EventEmitterTrait
     public function off(string $event, callable $handler = null, int $priority = null): self
     {
         if ($handler === null) {
-            unset($this->listeners[$event], $this->sorted[$event]);
+            unset($this->listeners[$event]);
             return $this;
         }
 

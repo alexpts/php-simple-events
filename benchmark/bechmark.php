@@ -7,7 +7,7 @@ use PTS\Events\Filter\FilterEmitter;
 
 require_once __DIR__  .'/../vendor/autoload.php';
 
-$iterations = $argv[1] ?? 1000; // 13ms - 10000
+$iterations = $argv[1] ?? 10000;
 $blackfire = $argv[2] ?? false;
 $iterations++;
 
@@ -27,7 +27,6 @@ $events
 $filters
     ->on('filter-a', fn(int $a, int $b) => $a, 50, [1, 2])
     ->on('filter-a', fn(int $a, int $b) => $a);
-
 
 while ($iterations--) {
     $events->emit('event-a', [1]);

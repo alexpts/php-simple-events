@@ -12,17 +12,16 @@ trait FilterEmitterTrait
 
     public function emit(string $name, $value, array $args = [])
     {
-        $filter = $this->listeners[$name] ?? null;
-        if ($filter === null) {
-            return $value;
-        }
-
         try {
-            foreach ($this->getSortedListeners($name) as $i => $listener) {
+            foreach ($this->listeners[$name] ?? [] as $i => $listener) {
                 $handler = $listener->handler;
                 $value = $handler($value, ...$args, ...$listener->extraArgs);
+
                 if ($listener->once) {
                     unset($this->listeners[$name][$i]);
+                    if (count($this->listeners[$name]) === 0) {
+                        unset($this->listeners[$name]);
+                    }
                 }
             }
         } catch (StopPropagation $e) {
