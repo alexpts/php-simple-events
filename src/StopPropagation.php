@@ -3,12 +3,14 @@ declare(strict_types=1);
 
 namespace PTS\Events;
 
-class StopPropagation extends \Exception
+use Exception;
+
+class StopPropagation extends Exception
 {
     /** @var mixed */
     public $value;
 
-    public function setValue($value): self
+    public function setValue(mixed $value): static
     {
         $this->value = $value;
         return $this;

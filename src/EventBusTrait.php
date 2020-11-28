@@ -20,20 +20,13 @@ trait EventBusTrait
         $this->filters = $filters;
     }
 
-    /**
-     * @param string $name
-     * @param mixed $value
-     * @param array $arguments
-     *
-     * @return mixed $value
-     */
-    public function filter(string $name, $value, array $arguments = [])
+    public function filter(string $name, mixed $value, array $arguments = []): mixed
     {
         return $this->filters ? $this->filters->emit($name, $value, $arguments) : $value;
     }
 
     public function emit(string $name, array $arguments = []): void
     {
-        $this->events && $this->events->emit($name, $arguments);
+        $this->events?->emit($name, $arguments);
     }
 }

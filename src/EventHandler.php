@@ -5,37 +5,36 @@ namespace PTS\Events;
 
 class EventHandler
 {
-	public string $id;
-	public int $priority = 0;
-	/** @var callable */
-	public $handler;
-	public array $extraArgs = [];
-	public bool $once = false;
+    public string $id;
+    /** @var callable */
+    public $handler;
+    public bool $once = false;
 
-	public function __construct(callable $handler, int $priority = 0, array $extraArgs = [])
-	{
-		$this->id = $this->getHandlerId($handler);
-		$this->handler = $handler;
-		$this->priority = $priority;
-		$this->extraArgs = $extraArgs;
-	}
+    public function __construct(
+        callable $handler,
+        public int $priority = 0,
+        public array $extraArgs = []
+    ) {
+        $this->id = $this->getHandlerId($handler);
+        $this->handler = $handler;
+    }
 
-	protected function getHandlerId(callable $handler): string
-	{
-		if (is_array($handler)) {
-			[$className, $method] = $handler;
+    protected function getHandlerId(callable $handler): string
+    {
+        if (is_array($handler)) {
+            [$className, $method] = $handler;
 
-			if (is_object($className)) {
-				$className = get_class($className);
-			}
+            if (is_object($className)) {
+                $className = get_class($className);
+            }
 
-			return "{$className}::{$method}";
-		}
+            return "{$className}::{$method}";
+        }
 
-		return is_string($handler) ? $handler : spl_object_hash($handler);
-	}
+        return is_string($handler) ? $handler : spl_object_hash($handler);
+    }
 
-	public function isSame(callable $handler, int $priority = null): bool
+    public function isSame(callable $handler, int $priority = null): bool
     {
         $withPriority = $priority !== null;
         if ($withPriority && $priority !== $this->priority) {

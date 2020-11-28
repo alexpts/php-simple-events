@@ -7,10 +7,10 @@ use PTS\Events\EventHandler;
 
 interface FilterEmitterInterface
 {
-    public function emit(string $name, $value, array $args = []);
-    public function on(string $name, callable $handler, int $priority = 50, array $extraArgs = []): self;
-    public function once(string $name, callable $handler, int $priority = 50, array $extraArgs = []): self;
-    public function off(string $event, callable $handler = null, int $priority = null): self;
+    public function emit(string $name, mixed $value, array $args = []): mixed;
+    public function on(string $name, callable $handler, int $priority = 50, array $extraArgs = []): static;
+    public function once(string $name, callable $handler, int $priority = 50, array $extraArgs = []): static;
+    public function off(string $event, callable $handler = null, int $priority = null): static;
 
     /**
      * @param string|null $event
