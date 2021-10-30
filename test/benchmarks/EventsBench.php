@@ -5,6 +5,7 @@ namespace test\unit;
 
 use PhpBench\Benchmark\Metadata\Annotations\Iterations;
 use PhpBench\Benchmark\Metadata\Annotations\OutputMode;
+use PhpBench\Benchmark\Metadata\Annotations\OutputTimeUnit;
 use PhpBench\Benchmark\Metadata\Annotations\Revs;
 use PhpBench\Benchmark\Metadata\Annotations\Subject;
 use PhpBench\Benchmark\Metadata\Annotations\Warmup;
@@ -22,9 +23,10 @@ class EventsBench
     
     /**
      * @Subject bench
-     * @Revs(1000000)
+     * @Revs(10000000)
      * @Iterations(10)
      * @BeforeMethods({"init"})
+     * @OutputTimeUnit("microseconds", precision=3)
      * @OutputMode("throughput")
      * @Warmup(1)
      */
