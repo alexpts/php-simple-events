@@ -29,4 +29,14 @@ trait EventBusTrait
     {
         $this->events?->emit($name, $arguments);
     }
+
+    public function emitArgs(string $name, array $arguments = []): void
+    {
+        $this->events?->emitArgs($name, $arguments);
+    }
+
+    public function emitNoArgs(string $name): void
+    {
+        $this->events?->emitNoArgs($name);
+    }
 }

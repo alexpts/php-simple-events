@@ -12,14 +12,14 @@ use PhpBench\Benchmark\Metadata\Annotations\Warmup;
 use PTS\Events\EventEmitter;
 use PTS\Events\Filter\FilterEmitter;
 
-class EventsBench
+class FilterBench
 {
-    protected EventEmitter $emitter;
+    protected FilterEmitter $filters;
 
     public function init()
     {
-        $this->emitter = new EventEmitter;
-        $this->emitter->on('some.event', static fn() => 1);
+        $this->filters = new FilterEmitter;
+        $this->filters->on('some.filter', static fn($i) => $i++);
     }
     
     /**
@@ -33,7 +33,7 @@ class EventsBench
      */
     public function emit(): void
     {
-        $this->emitter->emit('some.event');
+        $this->filters->emit('some.filter', 1);
     }
 
     /**
@@ -47,21 +47,7 @@ class EventsBench
      */
     public function emitNoArgs(): void
     {
-        $this->emitter->emitNoArgs('some.event');
-    }
-
-    /**
-     * @Subject event emit old args
-     * @Revs(100000)
-     * @Iterations(20)
-     * @BeforeMethods({"init"})
-     * @OutputTimeUnit("microseconds", precision=3)
-     * @OutputMode("throughput")
-     * @Warmup(1)
-     */
-    public function emitOldArgs(): void
-    {
-        $this->emitter->emit('some.event', ['sister', 14]);
+        $this->filters->emitNoArgs('some.event', 1);
     }
 
     /**
@@ -75,6 +61,34 @@ class EventsBench
      */
     public function emitArgs(): void
     {
-        $this->emitter->emitArgs('some.event', ['sister', 14]);
+        $this->filters->emitArgs('some.event', 2, ['sister', 14]);
+    }
+
+    /**
+     * @Subject event emitArgs
+     * @Revs(100000)
+     * @Iterations(20)
+     * @BeforeMethods({"init"})
+     * @OutputTimeUnit("microseconds", precision=3)
+     * @OutputMode("throughput")
+     * @Warmup(1)
+     */
+    public function emitNoExtraArgs(): void
+    {
+        $this->filters->emitNoExtraArgs('some.event', 2);
+    }
+
+    /**
+     * @Subject event emitArgs #2
+     * @Revs(100000)
+     * @Iterations(20)
+     * @BeforeMethods({"init"})
+     * @OutputTimeUnit("microseconds", precision=3)
+     * @OutputMode("throughput")
+     * @Warmup(1)
+     */
+    public function emitNoExtraArgs2(): void
+    {
+        $this->filters->emitNoExtraArgs('some.event', 2, ['sister', 14]);
     }
 }
