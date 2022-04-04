@@ -1,0 +1,53 @@
+# https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions
+
+name: phpunit
+
+on:
+  pull_request: {}
+  release: {}
+  push:
+    branches: [ master ]
+
+jobs:
+  tests:
+    name: unit tests
+    runs-on: ubuntu-latest
+
+#    permissions:
+#      contents: read
+#      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: php-actions/composer@v6
+        with:
+          version: 2
+
+      - name: phpiunit tests
+        uses: php-actions/phpunit@v3
+        with:
+          configuration: ./test/phpunit.xml
+          php_extensions: pcov
+
+      - name: coverage monitor
+        uses: slavcodev/coverage-monitor-action@1.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          coverage_path: test/clover.xml
+          comment_footer: false
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} # require for private repo
+          files: test/clover.xml
+          name: github-ci
+          verbose: true
+
+#      - name: phpunit-coverage-badge
+#        uses: timkrase/phpunit-coverage-badge@v1.2.0
+#        with:
+#          report: test/clover.xml
+#          coverage_badge_path: test/coverage.svg
+#          push_badge: true
+#          repo_token: ${{ secrets.GITHUB_TOKEN }}

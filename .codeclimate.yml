@@ -1,6 +1,0 @@
-languages:
-  PHP: true
-
-exclude_paths:
-  - "test/*"
-  - "vendor/*"
