@@ -1,12 +1,7 @@
 # php-simple-events
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8615ac6e31854b43b0a26a8dc558eb0e)](https://www.codacy.com/app/alexpts/php-simple-events?utm_source=github.com&utm_medium=referral&utm_content=alexpts/php-simple-events&utm_campaign=badger)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/590c6fdc-95ed-4ed6-b76d-169d99c5de58/big.png)](https://insight.sensiolabs.com/projects/590c6fdc-95ed-4ed6-b76d-169d99c5de58)
-
-[![Build Status](https://travis-ci.org/alexpts/php-simple-events.svg?branch=master)](https://travis-ci.org/alexpts/php-simple-events)
-[![Code Coverage](https://scrutinizer-ci.com/g/alexpts/php-simple-events/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/alexpts/php-simple-events/?branch=master)
-[![Code Climate](https://codeclimate.com/github/alexpts/php-simple-events/badges/gpa.svg)](https://codeclimate.com/github/alexpts/php-simple-events)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/alexpts/php-simple-events/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/alexpts/php-simple-events/?branch=master)
+![unit tests](https://github.com/alexpts/php-simple-events/actions/workflows/phpunit.yml/badge.svg)
+[![codecov](https://codecov.io/gh/alexpts/php-simple-events/branch/master/graph/badge.svg?token=8Q3KC7BICL)](https://codecov.io/gh/alexpts/php-simple-events)
 
 ## EventEmitter
 It is very fast event emitter and filters.
