@@ -8,7 +8,6 @@ use PTS\Events\EventHandler;
 interface FilterEmitterInterface
 {
     public function emit(string $name, mixed $value, array $args = []): mixed;
-    public function emitArgs(string $name, mixed $value, array $args = []): mixed;
     public function emitNoArgs(string $name, mixed $value): mixed;
 
     public function on(string $name, callable $handler, int $priority = 50, array $extraArgs = []): static;

@@ -6,7 +6,6 @@ namespace PTS\Events;
 interface EventEmitterInterface
 {
     public function emit(string $name, array $args = []): void;
-    public function emitArgs(string $name, array $args = []): void;
     public function emitNoArgs(string $name): void;
 
     public function on(string $name, callable $handler, int $priority = 50, array $extraArgs = []): static;

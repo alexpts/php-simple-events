@@ -49,46 +49,4 @@ class FilterBench
     {
         $this->filters->emitNoArgs('some.event', 1);
     }
-
-    /**
-     * @Subject event emitArgs
-     * @Revs(100000)
-     * @Iterations(20)
-     * @BeforeMethods({"init"})
-     * @OutputTimeUnit("microseconds", precision=3)
-     * @OutputMode("throughput")
-     * @Warmup(1)
-     */
-    public function emitArgs(): void
-    {
-        $this->filters->emitArgs('some.event', 2, ['sister', 14]);
-    }
-
-    /**
-     * @Subject event emitArgs
-     * @Revs(100000)
-     * @Iterations(20)
-     * @BeforeMethods({"init"})
-     * @OutputTimeUnit("microseconds", precision=3)
-     * @OutputMode("throughput")
-     * @Warmup(1)
-     */
-    public function emitNoExtraArgs(): void
-    {
-        $this->filters->emitNoExtraArgs('some.event', 2);
-    }
-
-    /**
-     * @Subject event emitArgs #2
-     * @Revs(100000)
-     * @Iterations(20)
-     * @BeforeMethods({"init"})
-     * @OutputTimeUnit("microseconds", precision=3)
-     * @OutputMode("throughput")
-     * @Warmup(1)
-     */
-    public function emitNoExtraArgs2(): void
-    {
-        $this->filters->emitNoExtraArgs('some.event', 2, ['sister', 14]);
-    }
 }

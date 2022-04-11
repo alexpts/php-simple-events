@@ -1,8 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace PTS\Events;
+namespace PTS\Events\Bus;
 
+use PTS\Events\EventEmitterInterface;
 use PTS\Events\Filter\FilterEmitterInterface;
 
 trait EventBusTrait
@@ -28,15 +29,5 @@ trait EventBusTrait
     public function emit(string $name, array $arguments = []): void
     {
         $this->events?->emit($name, $arguments);
-    }
-
-    public function emitArgs(string $name, array $arguments = []): void
-    {
-        $this->events?->emitArgs($name, $arguments);
-    }
-
-    public function emitNoArgs(string $name): void
-    {
-        $this->events?->emitNoArgs($name);
     }
 }

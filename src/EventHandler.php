@@ -5,15 +5,15 @@ namespace PTS\Events;
 
 class EventHandler
 {
-    public string $id;
+    public readonly string $id;
     /** @var callable */
     public $handler;
     public bool $once = false;
 
     public function __construct(
         callable $handler,
-        public int $priority = 0,
-        public array $extraArgs = []
+        public readonly int $priority = 0,
+        public readonly array $extraArgs = []
     ) {
         $this->id = $this->getHandlerId($handler);
         $this->handler = $handler;

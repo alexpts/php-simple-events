@@ -1,6 +1,7 @@
 <?php
+declare(strict_types=1);
 
-namespace test\unit;
+namespace PTS\Events\Test\Event;
 
 use PHPUnit\Framework\TestCase;
 use PTS\Events\EventHandler;

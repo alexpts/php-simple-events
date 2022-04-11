@@ -14,7 +14,7 @@ It is very fast event emitter and filters.
 
 ### Creating an Emitter
 ```php
-$emitter = new PTS\Events\EventEmitter;
+$emitter = new \PTS\Events\EventEmitter;
 ```
 
 ### Adding Listeners
@@ -31,13 +31,18 @@ With priority
 $emitter->on('user.created', $handler, 100);
 ```
 
-With extra arguments
+With extra arguments for EventEmitterExtraArgs instance (EventEmitter instance skip extra args)
 ```php
+$emitter = new \PTS\Events\EventEmitterExtraArgs;
+
 $extra1 = 1;
 $extra2 = 'some';
-$emitter->on('log', function(string $log, int $extra1, string $extra2) {
+
+$handler = function(string $log, int $extra1, string $extra2) {
    // ...
-}, 50, [$extra1, $extra2]);
+};
+
+$emitter->on('log', $handler, 50, [$extra1, $extra2]);
 $emitter->emit('log', ['some log']);
 ```
 
@@ -97,8 +102,7 @@ eventNames(): array;
 EventHandler must be `callable`
 
 ```php
-use PTS\Events\Events;
-$eventsBus = new EventEmitter;
+$eventsBus = new \PTS\Events\EventEmitter;
 
 $eventsBus->on('some:event', function(){ ... });
 $eventsBus->on('some:event', 'trim');
@@ -108,7 +112,7 @@ $eventsBus->once('some', $instanceWithInvokeMethod);
 ```
 
 #### Order handlers
-Listeners has priority. All listeners invoke by priority
+Listeners have priority. All listeners invoke by priority
 
 ```php
 $events->on('post:title', 'trim', 10); // second
@@ -133,9 +137,9 @@ $events->off('post:title');
 #### StopPropagation
 
 ```php
-$events->on('eventName', function(){ ... });
-$events->on('eventName', function(){ throw new StopPropagation; });
-$events->on('eventName', function(){ ... }); // it does not call
+$events->on('eventName', function() { ... });
+$events->on('eventName', function() { throw new StopPropagation; });
+$events->on('eventName', function() { ... }); // it does not call
 ```
 
 ## Filters
@@ -155,20 +159,19 @@ eventNames(): array;
 
 Example
 ```php
-use PTS\Events\Filters;
-$filters = new Filters;
+$filters = new \PTS\Events\Filters;
 
 $filters->on('post:title', 'trim');
 $title = $filters->filter('post:title', '   Raw title   '); // `Raw title`
 ```
 
 
-
 ### Inject EventEmitter / FilterEmitter
 
 1. Event/Filter Bus.
+
 ```php
-use PTS\Events\EventBusTrait;
+use PTS\Events\Bus\EventBusTrait;
 
 class Service {
     use EventBusTrait;
