@@ -31,7 +31,7 @@ With priority
 $emitter->on('user.created', $handler, 100);
 ```
 
-With extra arguments for EventEmitterExtraArgs instance (EventEmitter instance skip extra args)
+With extra arguments for EventEmitterExtraArgs instance (EventEmitter instance ignores extra args)
 ```php
 $emitter = new \PTS\Events\EventEmitterExtraArgs;
 
