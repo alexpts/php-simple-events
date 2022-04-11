@@ -32,6 +32,11 @@
             "PTS\\Events\\": "src"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "PTS\\Events\\Test\\": "test/unit"
+        }
+    },
     "scripts": {
         "bench": "vendor/bin/phpbench run --config=test/phpbench.json --report=aggregate",
         "test": "vendor/bin/phpunit --config=test/phpunit.xml"

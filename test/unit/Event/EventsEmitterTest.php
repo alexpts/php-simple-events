@@ -1,6 +1,7 @@
 <?php
+declare(strict_types=1);
 
-namespace test\unit;
+namespace PTS\Events\Test\Event;
 
 use Closure;
 use PHPUnit\Framework\TestCase;
@@ -9,12 +10,11 @@ use PTS\Events\EventEmitterInterface;
 use PTS\Events\StopPropagation;
 use stdClass;
 
-class EventsTest extends TestCase
+class EventsEmitterTest extends TestCase
 {
 
-    protected EventEmitter $events;
-    /** @var mixed */
-    protected $buffer;
+    protected EventEmitterInterface $events;
+    protected mixed $buffer;
 
     protected function setUp(): void
     {
@@ -48,6 +48,42 @@ class EventsTest extends TestCase
         static::assertEquals('Work', $this->buffer);
     }
 
+    public function testDifferentCountArguments(): void
+    {
+        $handler = Closure::bind(function(...$args) {
+            $this->buffer = array_sum($args);
+        }, $this, get_class($this));
+
+        $this->events->on('some:event', $handler);
+
+        $this->events->emit('some:event', []);
+        static::assertEquals(0, $this->buffer);
+
+        $this->events->emit('some:event', [2]);
+        static::assertEquals(2, $this->buffer);
+
+        $this->events->emit('some:event', [2, 4]);
+        static::assertEquals(6, $this->buffer);
+
+        $this->events->emit('some:event', [2, 4, 1]);
+        static::assertEquals(7, $this->buffer);
+
+        $this->events->emit('some:event', [2, 4, 1, 1]);
+        static::assertEquals(8, $this->buffer);
+    }
+
+    public function testEmitNoArgs(): void
+    {
+        $handler = Closure::bind(function(string $title = 'default') {
+            $this->buffer = $title;
+        }, $this, get_class($this));
+
+        $this->events->on('some:event', $handler, 50, ['extraArg']);
+
+        $this->events->emitNoArgs('some:event');
+        static::assertEquals('default', $this->buffer);
+    }
+
     public function testEventWithoutListeners(): void
     {
         $this->events->emit('some:event');
@@ -70,10 +106,15 @@ class EventsTest extends TestCase
     {
         $expected = EventEmitterInterface::class;
         static::assertInstanceOf($expected, $this->events->on('some', [$this, 'customEventHandler']));
+        static::assertInstanceOf($expected, $this->events->once('some', [$this, 'customEventHandler']));
         static::assertInstanceOf($expected, $this->events->off('some', [$this, 'customEventHandler']));
     }
 
-    public function testStopPropagation(): void
+    /**
+     * @return void
+     * @dataProvider stopPropagationDataProvider
+     */
+    public function testStopPropagation(string $method): void
     {
         $handler = Closure::bind(function () {
             $this->buffer = 'closure';
@@ -86,9 +127,18 @@ class EventsTest extends TestCase
 
         $this->events->on('name', $handler);
         $this->events->on('name', $handler2);
-        $this->events->emit('name');
+
+        $this->events->{$method}('name');
 
         static::assertEquals('closure', $this->buffer);
+    }
+
+    public function stopPropagationDataProvider(): array
+    {
+        return [
+          ['emit'] ,
+          ['emitNoArgs']
+        ];
     }
 
     public function testEventNames(): void
@@ -105,13 +155,16 @@ class EventsTest extends TestCase
         $obj = new stdClass;
         $obj->count = 0;
 
-        $this->events->once('once:test', function (stdClass $obj) {
-            $obj->count++;
-        });
+        $this->events->once('once:test', fn(stdClass $obj) => $obj->count++);
 
         static::assertCount(1, $this->events->listeners());
         $this->events->emit('once:test', [$obj]);
         static::assertCount(0, $this->events->listeners());
         static::assertSame(1, $obj->count);
+
+        $this->events->once('once:test2', function() { });
+        static::assertCount(1, $this->events->listeners());
+        $this->events->emitNoArgs('once:test2');
+        static::assertCount(0, $this->events->listeners());
     }
 }

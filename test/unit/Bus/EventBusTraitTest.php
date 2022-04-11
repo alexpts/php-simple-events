@@ -1,10 +1,11 @@
 <?php
+declare(strict_types=1);
 
-namespace test\unit;
+namespace PTS\Events\Test\Bus;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PTS\Events\EventBusTrait;
+use PTS\Events\Bus\EventBusTrait;
 use PTS\Events\EventEmitter;
 use PTS\Events\EventEmitterInterface;
 use PTS\Events\Filter\FilterEmitter;
@@ -13,12 +14,10 @@ use ReflectionClass;
 use ReflectionException;
 use ReflectionProperty;
 
-class EmitterTraitTest extends TestCase
+class EventBusTraitTest extends TestCase
 {
-    /** @var EventEmitterInterface */
-    protected $events;
-    /** @var FilterEmitterInterface */
-    protected $filters;
+    protected EventEmitterInterface $events;
+    protected FilterEmitterInterface $filters;
 
     /**
      * @inheritdoc

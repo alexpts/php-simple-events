@@ -1,8 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace PTS\Events;
+namespace PTS\Events\Bus;
 
+use PTS\Events\EventEmitterInterface;
 use PTS\Events\Filter\FilterEmitterInterface;
 
 trait EventBusTrait

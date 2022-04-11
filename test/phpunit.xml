@@ -9,8 +9,14 @@
         </report>
     </coverage>
     <testsuites>
-        <testsuite name="unit">
-            <directory>./unit</directory>
+        <testsuite name="event">
+            <directory>./unit/Event</directory>
+        </testsuite>
+        <testsuite name="filter">
+            <directory>./unit/Filter</directory>
+        </testsuite>
+        <testsuite name="bus">
+            <directory>./unit/Bus</directory>
         </testsuite>
     </testsuites>
 </phpunit>

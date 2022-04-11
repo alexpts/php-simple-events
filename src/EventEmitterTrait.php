@@ -10,10 +10,34 @@ trait EventEmitterTrait
 
     public function emit(string $name, array $args = []): void
     {
+        $countArgs = count($args);
+
         try {
             foreach ($this->listeners[$name] ?? [] as $i => $listener) {
-                $handler = $listener->handler;
-                $handler(...$args, ...$listener->extraArgs);
+                match ($countArgs) {
+                    0 => ($listener->handler)(),
+                    1 => ($listener->handler)($args[0]),
+                    2 => ($listener->handler)($args[0], $args[1]),
+                    default => ($listener->handler)(...$args),
+               };
+
+                if ($listener->once) {
+                    unset($this->listeners[$name][$i]);
+                    if (count($this->listeners[$name]) === 0) {
+                        unset($this->listeners[$name]);
+                    }
+                }
+            }
+        } catch (StopPropagation) {
+            return;
+        }
+    }
+
+    public function emitNoArgs(string $name): void
+    {
+        try {
+            foreach ($this->listeners[$name] ?? [] as $i => $listener) {
+                ($listener->handler)();
 
                 if ($listener->once) {
                     unset($this->listeners[$name][$i]);
