@@ -13,6 +13,10 @@ jobs:
     name: unit tests
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        php-versions: [ 8.1, 8.2 ]
+
 #    permissions:
 #      contents: read
 #      pull-requests: write
@@ -20,14 +24,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: php-actions/composer@v6
-        with:
-          version: 2
-
-      - name: phpiunit tests
+      - name: phpunit tests ${{ matrix.php-versions }}
         uses: php-actions/phpunit@v3
         with:
-          configuration: ./test/phpunit.xml
+          bootstrap: vendor/autoload.php
+          configuration: test/phpunit.xml
           php_extensions: pcov
+          php_version: ${{ matrix.php-versions }}
+          version: 9.5
+          #vendored_phpunit_path: vendor/bin/phpunit
 
       - name: coverage monitor
         uses: slavcodev/coverage-monitor-action@1.6.0
