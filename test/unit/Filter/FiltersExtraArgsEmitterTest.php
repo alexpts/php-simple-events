@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace PTS\Events\Test\Filter;
 
 use Closure;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use PTS\Events\Filter\FilterEmitterInterface;
 use PTS\Events\Filter\FilterExtraArgsEmitter;
@@ -121,9 +122,10 @@ class FiltersExtraArgsEmitterTest extends TestCase
     }
 
     /**
+     * @param string $method
      * @return void
-     * @dataProvider stopPropagationDataProvider
      */
+    #[DataProvider('stopPropagationDataProvider')]
     public function testStopPropagation(string $method): void
     {
         $rawTitle = '  Hello world!!!  ';
@@ -137,7 +139,7 @@ class FiltersExtraArgsEmitterTest extends TestCase
         self::assertEquals('Hello world!!!', $title);
     }
 
-    public function stopPropagationDataProvider(): array
+    public static function stopPropagationDataProvider(): array
     {
         return [
             ['emit'],

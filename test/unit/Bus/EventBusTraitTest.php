@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace PTS\Events\Test\Bus;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use PTS\Events\Bus\EventBusTrait;
@@ -85,9 +86,8 @@ class EventBusTraitTest extends TestCase
      * @param string $input
      * @param string $expected
      * @param bool $hasFilter
-     *
-     * @dataProvider dataProviderTestFilter
      */
+    #[DataProvider('dataProviderTestFilter')]
     public function testFilter(string $input, string $expected, bool $hasFilter = true): void
     {
         $this->filters->on('some.filter', 'trim');
@@ -101,7 +101,7 @@ class EventBusTraitTest extends TestCase
         self::assertSame($expected, $actual);
     }
 
-    public function dataProviderTestFilter(): array
+    public static function dataProviderTestFilter(): array
     {
         return [
            [ ' a ', 'a', true],

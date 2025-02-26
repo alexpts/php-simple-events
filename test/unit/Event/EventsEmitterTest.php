@@ -9,6 +9,7 @@ use PTS\Events\EventEmitter;
 use PTS\Events\EventEmitterInterface;
 use PTS\Events\StopPropagation;
 use stdClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class EventsEmitterTest extends TestCase
 {
@@ -111,9 +112,10 @@ class EventsEmitterTest extends TestCase
     }
 
     /**
+     * @param string $method
      * @return void
-     * @dataProvider stopPropagationDataProvider
      */
+    #[DataProvider('stopPropagationDataProvider')]
     public function testStopPropagation(string $method): void
     {
         $handler = Closure::bind(function () {
@@ -133,11 +135,11 @@ class EventsEmitterTest extends TestCase
         static::assertEquals('closure', $this->buffer);
     }
 
-    public function stopPropagationDataProvider(): array
+    public static function stopPropagationDataProvider(): array
     {
         return [
-          ['emit'] ,
-          ['emitNoArgs']
+          0 => ['emit'] ,
+          1 => ['emitNoArgs']
         ];
     }
 

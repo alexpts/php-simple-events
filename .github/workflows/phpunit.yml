@@ -31,7 +31,7 @@ jobs:
           configuration: test/phpunit.xml
           php_extensions: pcov
           php_version: ${{ matrix.php-versions }}
-          version: 9.6
+          version: 10.5
           #vendored_phpunit_path: vendor/bin/phpunit
 
       - name: coverage monitor
