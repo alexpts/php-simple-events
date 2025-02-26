@@ -12,13 +12,13 @@ interface FilterEmitterInterface
 
     public function on(string $name, callable $handler, int $priority = 50, array $extraArgs = []): static;
     public function once(string $name, callable $handler, int $priority = 50, array $extraArgs = []): static;
-    public function off(string $event, callable $handler = null, int $priority = null): static;
+    public function off(string $event, ?callable $handler = null, ?int $priority = null): static;
 
     /**
      * @param string|null $event
      *
      * @return EventHandler[][]|EventHandler[]
      */
-    public function listeners(string $event = null): array;
+    public function listeners(?string $event = null): array;
     public function eventNames(): array;
 }

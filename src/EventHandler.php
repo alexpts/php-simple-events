@@ -34,7 +34,7 @@ class EventHandler
         return is_string($handler) ? $handler : spl_object_hash($handler);
     }
 
-    public function isSame(callable $handler, int $priority = null): bool
+    public function isSame(callable $handler, ?int $priority = null): bool
     {
         $withPriority = $priority !== null;
         if ($withPriority && $priority !== $this->priority) {

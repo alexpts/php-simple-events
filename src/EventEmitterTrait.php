@@ -51,7 +51,7 @@ trait EventEmitterTrait
         }
     }
 
-    public function listeners(string $event = null): array
+    public function listeners(?string $event = null): array
     {
         if ($event === null) {
             return $this->listeners;
@@ -95,7 +95,7 @@ trait EventEmitterTrait
         return $this;
     }
 
-    public function off(string $event, callable $handler = null, int $priority = null): static
+    public function off(string $event, ?callable $handler = null, ?int $priority = null): static
     {
         if ($handler === null) {
             unset($this->listeners[$event]);
