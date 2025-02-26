@@ -2,3 +2,5 @@
 /vendor/
 test/clover.xml
 test/.phpunit.result.cache
+
+composer.phar

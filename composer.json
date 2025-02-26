@@ -23,9 +23,9 @@
         "php": ">=8.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.5",
-        "blackfire/php-sdk": "^1.31",
-        "phpbench/phpbench": "^1.2"
+        "phpunit/phpunit": "^9.6",
+        "blackfire/php-sdk": "^1.35",
+        "phpbench/phpbench": "^1.4"
     },
     "autoload": {
         "psr-4": {
